@@ -8,6 +8,7 @@ decision seat; Claude runs the execution layer as a Squad Lead routing to specia
 ```
 .
 ├── CLAUDE.md              # Squad Lead instructions + routing table (read first)
+├── business-strategy.md   # North Star (₱1M/mo NET), four leverage plays, dev roadmap — load first
 ├── company.md             # Durable business memory: model, margins, suppliers, sites, cadence
 ├── .claude/
 │   └── agents/            # The specialized subagents CLAUDE.md routes to

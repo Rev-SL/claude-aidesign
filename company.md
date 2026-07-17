@@ -3,6 +3,9 @@
 > Operating memory for the one-person company. The Squad Lead (and every agent in
 > `.claude/agents/`) reads this to avoid re-deriving how the business works. Update it
 > whenever a standing fact changes. Numbers dated to **July 2026**.
+>
+> **Read `business-strategy.md` first** — it holds the North Star (**₱1M/month NET**), the
+> four leverage plays, and the dev roadmap. This file is the operating facts underneath it.
 
 ---
 
@@ -10,15 +13,20 @@
 
 **Collector's Corner Philippines** — the primary business. Buys sealed Pokémon and One
 Piece TCG (mostly Japanese/Chinese exclusives) sourced in Japan, sells in the Philippines.
-Tagline: *"Sourced in Japan. Sold in the Philippines."* Channels: Shopify store, Notion-run
-manual orders/pre-orders, card shows, meetups.
+Tagline: *"Sourced in Japan. Sold in the Philippines."* Online at **collectorscorner.store**,
+physical presence at **Dibs Pack**. Channels: Shopify store, Notion-run manual orders/
+pre-orders, card shows, meetups. **RevEarnsDaily** = personal brand / content flywheel.
 
-Sister brands (share the operator, not the P&L): **Nice Dae Studio** (photo booth/print,
-corporate incl. OPPO PH), **South Locker** (sneakers, supplier Jingfeng), **Kura Cases**
-(B2B TCG accessories), **RevEarnsDaily** (personal brand).
+**North Star:** #1 TCG store in PH and **₱1M/month NET profit** (see `business-strategy.md`).
+The four leverage plays that get there: (1) TikTok Live selling, (2) card syndicate / outside
+capital, (3) Oripa scaling, (4) buyback/kaitori board.
 
-**Team:** Jacob (backend/ops sign-off, non-technical), Eugene (marketing), CJ (video),
-Melanie (part-time sales), Sheila (part-time design).
+**Deprioritized brands (no strategic effort unless asked):** Nice Dae Studio (photo booth,
+OPPO PH), South Locker (sneakers, supplier Jingfeng), Kura Cases (B2B accessories), vending.
+
+**Team:** Jacob (backend/ops sign-off, non-technical), Eugene (marketing decision maker),
+CJ (video), Melanie (part-time sales), Sheila (part-time design), Lawrence (inventory
+co-owner, 50/50 syndicate precedent), Kyle (outgoing dev, being replaced).
 
 ---
 
@@ -26,8 +34,15 @@ Melanie (part-time sales), Sheila (part-time design).
 
 Source of truth for sales = Notion **"Collector's Corner Sales and Preorders"** database
 (data source `collection://37aa701e-331d-81b3-a3b7-000bc30474ea`). Cash is logged as free
-text in `Total Paid` ("php 6,800", "dp 3,600") — **no COGS field exists**, which is why true
-profit cannot be read directly. Fixing this is the #1 data upgrade (see §7).
+text in `Total Paid` ("php 6,800", "dp 3,600").
+
+Source of truth for **cost** = Notion **"Collector's Corner — COGS & Landed Costs"** database
+(data source `collection://1f6a9879-22d0-48a2-a75b-32f4062c165e`,
+[link](https://app.notion.com/p/abd72c6cf23f481583ccf4f12f9eab6a)). One row per purchase lot:
+buy price + Vikings freight → landed cost (PHP) and gross margin per unit, related back to the
+sales orders. **Intake workflow:** Russel drops a payment screenshot + product list + tracking
+number in chat; the Squad Lead adds the row (Buy Price USD, Weight kg, Handling, FX, Qty, Sell
+Price, Tracking #, Payment Proof). This is what finally makes true per-order margin readable.
 
 **Revenue (net cash collected):**
 
@@ -127,14 +142,15 @@ Center for ENG set dates.
 
 ## 7. Known gaps / data upgrades (priority order)
 
-1. **Add a COGS/landed-cost column** to the Notion sales DB (or a linked cost ledger keyed
-   by SKU). Without it, every margin number here is an estimate. This is the single highest-
-   value fix — it turns "we think we're profitable" into "we know our margin per order."
+1. ~~Add a COGS/landed-cost ledger.~~ **DONE (2026-07-17)** — the "COGS & Landed Costs"
+   database now exists (§2). Populate it going forward so estimates become actuals.
 2. **Standardize `Total Paid`** — one clean numeric field + a separate deposit field. Free
    text ("php 6,810 w/ shipping fee php 300 (downpayment) php 21,500 total") is unparseable
    without heuristics.
 3. **Fix Supermetrics** (Meta Ads `act_549260347455113`) — no valid CLAUDE subscription on
    team `russelmilanesramos`. Until fixed, no defensible ad scale/pause decision.
+4. **Backfill** the COGS ledger with recent buys (Vikings invoices) so the blended-margin
+   estimate in §3 can be replaced with real numbers.
 
 ---
 
