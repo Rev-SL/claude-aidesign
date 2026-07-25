@@ -89,7 +89,23 @@ margin lives in: singles/chase cards, graded slabs (PSA), oripa/pack rips, acces
 
 ## 4. Break-even & target margin
 
-Fixed cost = **₱200,000/month** (staff + ads).
+Fixed cost envelope = **₱200,000/month** (staff + ads + subscriptions). Real breakdown:
+
+| Line | Monthly |
+|---|---|
+| Melanie (sales, ₱500/day × 26) | ₱13,000 |
+| Jacob (backend, ₱880/day × 30; 28d → ₱24,640) | ₱26,400 |
+| Sheila (graphics, fixed) | ₱15,000 |
+| CJ (video, ₱15,000 cash + ₱5,000 sealed) | ₱20,000 |
+| Subscriptions (combined) | ₱6,000 |
+| **Non-ad fixed** | **₱80,400** |
+| **Ads headroom (₱200K − fixed)** | **~₱119,600** |
+
+Notes: non-ad fixed ≈ **₱80K/mo** (of which **₱75,400 is cash** — CJ's ₱5K is paid in sealed
+product, not pesos). Subscriptions sit *inside* the ₱200K. The **~₱120K ad budget is the
+scalable lever**; the ₱80K people/tools cost is fixed and lean. This ₱200K envelope is the
+survival fixed cost only — it excludes COGS/landed cost (see §3) and the other variable lines
+(payment fees, rent, disputes) that also reduce true NET.
 
 | Blended GM | Break-even revenue/mo |
 |---|---|
