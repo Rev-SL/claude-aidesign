@@ -5,7 +5,7 @@
     --ink:#16181A; --ink-2:#4A4F52; --ink-3:#7C8286;
     --rule:#D3D6D1; --rule-hard:#B9BDB7;
     --seal:#B33A2B; --seal-soft:#F0E0DC;
-    --indigo:#2B3A55; --moss:#43664A; --moss-soft:#E1EAE1; --ochre:#8E6B21;
+    --indigo:#2B3A55; --moss:#43664A; --moss-soft:#E1EAE1; --ochre:#8E6B21; --plum:#6E4478;
     --shadow:0 1px 2px rgba(22,24,26,.06), 0 8px 24px -16px rgba(22,24,26,.28);
     --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
@@ -16,7 +16,7 @@
       --ink:#E7E9E5; --ink-2:#A8AEB0; --ink-3:#767C80;
       --rule:#2A2E33; --rule-hard:#3A3F45;
       --seal:#E2685A; --seal-soft:#33201D;
-      --indigo:#8AA2CC; --moss:#83AC8A; --moss-soft:#1D2A1F; --ochre:#CFA85A;
+      --indigo:#8AA2CC; --moss:#83AC8A; --moss-soft:#1D2A1F; --ochre:#CFA85A; --plum:#B492C4;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
     }
   }
@@ -25,7 +25,7 @@
     --ink:#E7E9E5; --ink-2:#A8AEB0; --ink-3:#767C80;
     --rule:#2A2E33; --rule-hard:#3A3F45;
     --seal:#E2685A; --seal-soft:#33201D;
-    --indigo:#8AA2CC; --moss:#83AC8A; --moss-soft:#1D2A1F; --ochre:#CFA85A;
+    --indigo:#8AA2CC; --moss:#83AC8A; --moss-soft:#1D2A1F; --ochre:#CFA85A; --plum:#B492C4;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
   }
   :root[data-theme="light"]{
@@ -33,7 +33,7 @@
     --ink:#16181A; --ink-2:#4A4F52; --ink-3:#7C8286;
     --rule:#D3D6D1; --rule-hard:#B9BDB7;
     --seal:#B33A2B; --seal-soft:#F0E0DC;
-    --indigo:#2B3A55; --moss:#43664A; --moss-soft:#E1EAE1; --ochre:#8E6B21;
+    --indigo:#2B3A55; --moss:#43664A; --moss-soft:#E1EAE1; --ochre:#8E6B21; --plum:#6E4478;
     --shadow:0 1px 2px rgba(22,24,26,.06), 0 8px 24px -16px rgba(22,24,26,.28);
   }
 
@@ -97,9 +97,11 @@
   .bar{display:flex;height:34px;border-radius:2px;overflow:hidden;border:1px solid var(--rule-hard);}
   .bar span{display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:11px;color:#FDFDFC;font-weight:600;}
-  .seg-k{background:var(--ochre);} .seg-n{background:var(--moss);} .seg-r{background:var(--indigo);}
+  .seg-k{background:var(--ochre);} .seg-n{background:var(--moss);}
+  .seg-r{background:var(--indigo);} .seg-e{background:var(--plum);}
   .legend{display:grid;gap:8px;grid-template-columns:1fr;}
-  @media(min-width:560px){.legend{grid-template-columns:repeat(3,1fr);}}
+  @media(min-width:560px){.legend{grid-template-columns:repeat(2,1fr);}}
+  @media(min-width:840px){.legend{grid-template-columns:repeat(4,1fr);}}
   .leg{display:flex;gap:9px;align-items:baseline;background:var(--surface);
     border:1px solid var(--rule);border-radius:3px;padding:10px 12px;}
   .dot{width:9px;height:9px;border-radius:1px;flex:none;transform:translateY(1px);}
@@ -122,6 +124,7 @@
   tr.own-R td.id{border-left-color:var(--indigo);}
   tr.own-N td.id{border-left-color:var(--moss);}
   tr.own-K td.id{border-left-color:var(--ochre);}
+  tr.own-E td.id{border-left-color:var(--plum);}
   td.item{min-width:230px;}
   td.item .nm{font-weight:560;}
   td.item .mt{display:block;font-size:11.5px;color:var(--ink-3);}
@@ -186,13 +189,13 @@
   </header>
 
   <div class="status" style="border-left-color:var(--seal)">
-    <div class="eyebrow" style="color:var(--seal)">Open — settle with Nico</div>
-    <div class="amt">¥7,300 &nbsp;·&nbsp; ₱2,774</div>
-    <p><strong>Russel → Nico</strong>, for the momo restaurant dinner Nico paid on Day 2.
-      Booked at the full ¥7,300, not split. All inventory between the three buyers is settled —
-      Day 1's ¥93,637 and ¥1,290,909 both closed, and Day 2 was entirely Russel's own money.
-      This is the only outbound balance left on the trip.</p>
-    <div class="alt">Against it, VM owes Russel ¥1,809 for the jeans. Net position: Russel is out ¥5,491 (₱2,087).</div>
+    <div class="eyebrow" style="color:var(--seal)">3 balances open — Russel net ahead</div>
+    <div class="amt">+¥7,218 &nbsp;·&nbsp; ₱2,743</div>
+    <p>Two people owe Russel more than he owes out. <strong>Eugene ¥12,709</strong> for the two
+      singles Russel fronted at Shinsoku, <strong>VM ¥1,809</strong> for the jeans, against
+      <strong>¥7,300 to Nico</strong> for the momo dinner. Day 1's inventory is fully closed and
+      every Day 2 card was bought on Russel's own funds.</p>
+    <div class="alt">Collect ¥14,518, pay ¥7,300. Settling in JPY cash keeps all three off the FX question.</div>
   </div>
 
   <div class="tiles">
@@ -203,8 +206,8 @@
     </div>
     <div class="tile">
       <div class="lab">Russel's book</div>
-      <div class="big">₱365,788</div>
-      <div class="note">38 lines · 38.2% of the trip · all paid</div>
+      <div class="big">₱360,958</div>
+      <div class="note">36 lines · 37.7% of the trip · all paid</div>
     </div>
     <div class="tile">
       <div class="lab">Tax-free reclaimed</div>
@@ -215,21 +218,25 @@
 
   <section class="split">
     <h2>Capital by owner — trip to date</h2>
-    <div class="bar" role="img" aria-label="Kenshin 51 percent, Russel 38 percent, Nico 11 percent">
+    <div class="bar" role="img" aria-label="Kenshin 51.2 percent, Russel 37.7 percent, Nico 10.6 percent, Eugene 0.5 percent">
       <span class="seg-k" style="width:51.2%">51%</span>
-      <span class="seg-r" style="width:38.2%">38%</span>
+      <span class="seg-r" style="width:37.7%">38%</span>
       <span class="seg-n" style="width:10.6%">11%</span>
+      <span class="seg-e" style="width:0.5%" title="Eugene 0.5%"></span>
     </div>
     <div class="legend">
       <div class="leg"><i class="dot" style="background:var(--ochre)"></i>
         <div><span class="who">Kenshin</span><span class="st">2 slabs · Day 1 only · exited</span></div>
         <span class="v">₱490,545</span></div>
       <div class="leg"><i class="dot" style="background:var(--indigo)"></i>
-        <div><span class="who">Russel</span><span class="st">38 lines · 9 on D1, 29 on D2</span></div>
-        <span class="v">₱365,788</span></div>
+        <div><span class="who">Russel</span><span class="st">36 lines · 9 on D1, 27 on D2</span></div>
+        <span class="v">₱360,958</span></div>
       <div class="leg"><i class="dot" style="background:var(--moss)"></i>
         <div><span class="who">Nico</span><span class="st">4 slabs · Day 1 only · reimbursed</span></div>
         <span class="v">₱101,707</span></div>
+      <div class="leg"><i class="dot" style="background:var(--plum)"></i>
+        <div><span class="who">Eugene</span><span class="st">2 singles · Russel fronted · open</span></div>
+        <span class="v">₱4,829</span></div>
     </div>
   </section>
 
@@ -238,14 +245,14 @@
     <div class="daymark">
       <span class="d">Day 2</span>
       <h2>Shinjuku · Tuesday 28 July</h2>
-      <span class="st ok">✓ ALL RUSSEL · SELF-FUNDED</span>
+      <span class="st ok">27 RUSSEL · 2 EUGENE</span>
     </div>
 
     <div class="tiles">
       <div class="tile">
         <div class="lab">Day 2 deployed</div>
         <div class="big">₱276,318</div>
-        <div class="note">¥727,152 · 29 lines · 30 items</div>
+        <div class="note">¥727,152 · 29 lines · 30 items · all on Russel's funds</div>
       </div>
       <div class="tile">
         <div class="lab">Biggest line</div>
@@ -253,9 +260,9 @@
         <div class="note">Pokémon Stamp Box · 66% of the day</div>
       </div>
       <div class="tile">
-        <div class="lab">Day 2 tax-free</div>
-        <div class="big">¥71,313</div>
-        <div class="note">₱27,099 · 4 of 5 transactions</div>
+        <div class="lab">Eugene's two</div>
+        <div class="big">₱4,829</div>
+        <div class="note">¥12,709 · D2-04 + D2-11 · payable to Russel</div>
       </div>
     </div>
 
@@ -291,9 +298,9 @@
             <td>Russel</td><td>Russel</td>
             <td class="n r">15,800</td><td class="n r">14,364</td><td class="n r">5,458.32</td>
             <td><span class="pill p-free">免税</span></td></tr>
-          <tr class="own-R"><td class="id">D2-04</td>
+          <tr class="own-E"><td class="id">D2-04</td>
             <td class="item"><span class="nm">Gengar LV.38</span><span class="mt">ゲンガー LV.38 · グレードB</span></td>
-            <td>Russel</td><td>Russel</td>
+            <td>Eugene</td><td>Russel <span class="pill p-recv">owed</span></td>
             <td class="n r">11,800</td><td class="n r">10,727</td><td class="n r">4,076.26</td>
             <td><span class="pill p-free">免税</span></td></tr>
           <tr class="own-R"><td class="id">D2-05</td>
@@ -326,13 +333,13 @@
             <td>Russel</td><td>Russel</td>
             <td class="n r">2,380</td><td class="n r">2,164</td><td class="n r">822.32</td>
             <td><span class="pill p-free">免税</span></td></tr>
-          <tr class="own-R"><td class="id">D2-11</td>
-            <td class="item"><span class="nm">Single — manually rung</span><span class="mt">ポケカ_手打用シングル · item name not printed</span></td>
-            <td>Russel</td><td>Russel</td>
+          <tr class="own-E"><td class="id">D2-11</td>
+            <td class="item"><span class="nm">Pikachu — Jungle (JP)</span><span class="mt">手打用シングル · rung manually, no name on receipt</span></td>
+            <td>Eugene</td><td>Russel <span class="pill p-recv">owed</span></td>
             <td class="n r">2,180</td><td class="n r">1,982</td><td class="n r">753.16</td>
             <td><span class="pill p-free">免税</span></td></tr>
           <tr class="own-R"><td class="id">D2-12</td>
-            <td class="item"><span class="nm">Single — manually rung</span><span class="mt">ポケカ_手打用シングル · item name not printed</span></td>
+            <td class="item"><span class="nm">Latias AR (JP)</span><span class="mt">手打用シングル · rung manually, no name on receipt</span></td>
             <td>Russel</td><td>Russel</td>
             <td class="n r">1,180</td><td class="n r">1,073</td><td class="n r">407.74</td>
             <td><span class="pill p-free">免税</span></td></tr>
@@ -372,7 +379,7 @@
             <td class="n r">14,800</td><td class="n r">13,455</td><td class="n r">5,112.90</td>
             <td><span class="pill p-free">免税</span></td></tr>
           <tr class="own-R"><td class="id">D2-19</td>
-            <td class="item"><span class="nm">PSA 10 guaranteed — AR or above ×2</span><span class="mt">PSA10保証 AR以上 · ¥5,280 per item · 2 items</span></td>
+            <td class="item"><span class="nm">Alakazam AR + Electivire AR</span><span class="mt">PSA10保証 AR以上 · both PSA 10 · ¥5,280 per item</span></td>
             <td>Russel</td><td>Russel</td>
             <td class="n r">10,560</td><td class="n r">9,600</td><td class="n r">3,648.00</td>
             <td><span class="pill p-free">免税</span></td></tr>
@@ -425,7 +432,7 @@
             <td class="n r">1,050</td><td class="n r">1,050</td><td class="n r">399.00</td>
             <td><span class="pill p-taxed">税込</span></td></tr>
           <tr class="own-R"><td class="id">D2-28</td>
-            <td class="item"><span class="nm">AR single — 117/106</span><span class="mt">receipt katakana unclear · name needs confirming</span></td>
+            <td class="item"><span class="nm">Slakoth AR (JP)</span><span class="mt">117/106 AR · ナマケロ</span></td>
             <td>Russel</td><td>Russel</td>
             <td class="n r">410</td><td class="n r">410</td><td class="n r">155.80</td>
             <td><span class="pill p-taxed">税込</span></td></tr>
@@ -441,6 +448,10 @@
         <tfoot>
           <tr><td colspan="4">Day 2 total · 29 lines · 30 items</td>
             <td class="r">798,470</td><td class="r">727,152</td><td class="r">276,317.76</td><td></td></tr>
+          <tr><td colspan="4" style="font-weight:400;color:var(--ink-3);border-top:none">of which Russel's book · 27 lines</td>
+            <td class="r" style="font-weight:400;color:var(--ink-3);border-top:none">784,490</td>
+            <td class="r" style="font-weight:400;color:var(--ink-3);border-top:none">714,443</td>
+            <td class="r" style="font-weight:400;color:var(--ink-3);border-top:none">271,488.34</td><td style="border-top:none"></td></tr>
         </tfoot>
       </table>
     </div>
@@ -467,9 +478,9 @@
         <div class="note">¥9,619 · apparel and eyewear</div>
       </div>
       <div class="tile">
-        <div class="lab">Net position</div>
-        <div class="big">−₱2,087</div>
-        <div class="note">owes Nico ¥7,300 · owed ¥1,809 by VM</div>
+        <div class="lab">Resting on recall</div>
+        <div class="big">¥29,300</div>
+        <div class="note">58% of expenses · no receipt behind any of it</div>
       </div>
     </div>
 
@@ -703,6 +714,14 @@
   <section>
     <h2>Settlement</h2>
     <div class="cards">
+      <div class="card" style="border-left:4px solid var(--plum)">
+        <h3>Eugene → Russel <span class="pill p-recv">open</span></h3>
+        <p class="k">¥12,709 &nbsp;·&nbsp; ₱4,829 @0.38</p>
+        <p>Two singles Russel fronted at Shinsoku on Day 2 — <strong>D2-04 Gengar LV.38</strong>
+          ¥10,727 and <strong>D2-11 Pikachu Jungle (JP)</strong> ¥1,982. Eugene owns both; the
+          cards are out of Russel's inventory. Billed net of the 9.09% tax-free discount, same
+          basis as every other settlement on this trip.</p>
+      </div>
       <div class="card" style="border-left:4px solid var(--seal)">
         <h3>Russel → Nico · dinner <span class="pill p-recv">open</span></h3>
         <p class="k">¥7,300 &nbsp;·&nbsp; ₱2,774 @0.38</p>
@@ -748,15 +767,14 @@
             11 at Shinsoku, 9 at トレカガレージ</li>
         </ul>
         <p>Day 1 was a slab day; Day 2 flipped to sealed. Different velocity, different
-          storage, different grading pipeline.</p>
+          storage, different grading pipeline. Two of the singles are Eugene's, so Russel's
+          own Day 2 inventory is 28 items at ¥714,443.</p>
       </div>
       <div class="card">
         <h3>Still open</h3>
         <ul>
-          <li>D2-11 / D2-12 rang as 手打用シングル — ¥3,360 with no item name printed; identify before they hit inventory</li>
-          <li>D2-19 is a ¥5,280-per-item PSA 10 guarantee ×2 — confirm what the two cards actually are</li>
-          <li>D2-28 katakana unclear on the トレカガレージ receipt — confirm the ¥410 AR at 117/106</li>
-          <li>Russel owes Nico ¥7,300 for the momo dinner; VM owes Russel ¥1,809 for the jeans</li>
+          <li>Eugene owes ¥12,709, VM owes ¥1,809, Russel owes Nico ¥7,300 — all three unsettled</li>
+          <li>D2-04 and D2-11 sit in Russel's Shinsoku receipts but are Eugene's cards — keep them out of CC inventory</li>
           <li>Day 1 expenses are a ¥20,000 estimate — ¥17,000 recalled, ¥3,000 unitemised, no receipts</li>
           <li>Momo dinner and both IC loads are unreceipted — ¥29,300 of expenses rests on recall</li>
           <li>D1-14 / D1-15 still have no receipt — Nico's money, Nico's cards</li>
