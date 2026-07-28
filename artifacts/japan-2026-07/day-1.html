@@ -1,0 +1,396 @@
+<title>Japan Sourcing — Day 1 Costing</title>
+<style>
+  :root{
+    --paper:#ECEDEA; --surface:#FDFDFC; --sunk:#E3E5E1;
+    --ink:#16181A; --ink-2:#4A4F52; --ink-3:#7C8286;
+    --rule:#D3D6D1; --rule-hard:#B9BDB7;
+    --seal:#B33A2B; --seal-soft:#F0E0DC;
+    --indigo:#2B3A55; --moss:#43664A; --moss-soft:#E1EAE1; --ochre:#8E6B21;
+    --shadow:0 1px 2px rgba(22,24,26,.06), 0 8px 24px -16px rgba(22,24,26,.28);
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#121417; --surface:#1A1D21; --sunk:#0D0F11;
+      --ink:#E7E9E5; --ink-2:#A8AEB0; --ink-3:#767C80;
+      --rule:#2A2E33; --rule-hard:#3A3F45;
+      --seal:#E2685A; --seal-soft:#33201D;
+      --indigo:#8AA2CC; --moss:#83AC8A; --moss-soft:#1D2A1F; --ochre:#CFA85A;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#121417; --surface:#1A1D21; --sunk:#0D0F11;
+    --ink:#E7E9E5; --ink-2:#A8AEB0; --ink-3:#767C80;
+    --rule:#2A2E33; --rule-hard:#3A3F45;
+    --seal:#E2685A; --seal-soft:#33201D;
+    --indigo:#8AA2CC; --moss:#83AC8A; --moss-soft:#1D2A1F; --ochre:#CFA85A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+  :root[data-theme="light"]{
+    --paper:#ECEDEA; --surface:#FDFDFC; --sunk:#E3E5E1;
+    --ink:#16181A; --ink-2:#4A4F52; --ink-3:#7C8286;
+    --rule:#D3D6D1; --rule-hard:#B9BDB7;
+    --seal:#B33A2B; --seal-soft:#F0E0DC;
+    --indigo:#2B3A55; --moss:#43664A; --moss-soft:#E1EAE1; --ochre:#8E6B21;
+    --shadow:0 1px 2px rgba(22,24,26,.06), 0 8px 24px -16px rgba(22,24,26,.28);
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:940px;margin:0 auto;padding:28px 18px 72px;
+    display:flex;flex-direction:column;gap:30px;}
+  h1,h2,h3{text-wrap:balance;margin:0;}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+
+  /* masthead */
+  .mast{display:flex;flex-direction:column;gap:12px;
+    border-bottom:2px solid var(--ink);padding-bottom:14px;}
+  .mast h1{font-size:clamp(25px,6vw,36px);font-weight:680;letter-spacing:-.025em;line-height:1.1;}
+  .mast .sub{color:var(--ink-2);font-size:13.5px;}
+  .badges{display:flex;flex-wrap:wrap;gap:7px;}
+  .badge{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    border:1px solid var(--rule-hard);border-radius:2px;padding:3px 8px;color:var(--ink-2);
+    background:var(--surface);}
+
+  /* status band — Day 1 books closed */
+  .status{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--moss);
+    border-radius:3px;padding:18px 20px;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;gap:9px;}
+  .status .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--moss);font-weight:600;
+    display:flex;align-items:center;gap:7px;}
+  .status .amt{font-family:var(--mono);font-size:clamp(26px,7vw,36px);font-weight:600;
+    letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
+  .status .amt s{color:var(--ink-3);font-weight:500;text-decoration-thickness:1.5px;}
+  .status p{margin:0;color:var(--ink-2);font-size:14px;max-width:62ch;}
+  .status .alt{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);}
+
+  /* tiles */
+  .tiles{display:grid;gap:12px;grid-template-columns:1fr;}
+  @media(min-width:620px){.tiles{grid-template-columns:repeat(3,1fr);}}
+  .tile{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+    padding:15px 16px;display:flex;flex-direction:column;gap:5px;box-shadow:var(--shadow);}
+  .tile .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-3);}
+  .tile .big{font-family:var(--mono);font-size:24px;font-weight:600;letter-spacing:-.015em;
+    font-variant-numeric:tabular-nums;line-height:1.15;}
+  .tile .note{font-size:12.5px;color:var(--ink-2);}
+
+  section > h2{font-size:12px;font-family:var(--mono);letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-3);
+    border-bottom:1px solid var(--rule-hard);padding-bottom:7px;margin-bottom:14px;}
+  section{display:block;}
+
+  /* owner split */
+  .split{display:flex;flex-direction:column;gap:12px;}
+  .bar{display:flex;height:34px;border-radius:2px;overflow:hidden;border:1px solid var(--rule-hard);}
+  .bar span{display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;color:#FDFDFC;font-weight:600;}
+  .seg-k{background:var(--ochre);} .seg-n{background:var(--moss);} .seg-r{background:var(--indigo);}
+  .legend{display:grid;gap:8px;grid-template-columns:1fr;}
+  @media(min-width:560px){.legend{grid-template-columns:repeat(3,1fr);}}
+  .leg{display:flex;gap:9px;align-items:baseline;background:var(--surface);
+    border:1px solid var(--rule);border-radius:3px;padding:10px 12px;}
+  .dot{width:9px;height:9px;border-radius:1px;flex:none;transform:translateY(1px);}
+  .leg .who{font-weight:640;font-size:13.5px;}
+  .leg .v{margin-left:auto;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;}
+  .leg .st{display:block;font-size:11.5px;color:var(--ink-3);}
+
+  /* ledger */
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface);
+    box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;min-width:660px;font-size:13.5px;}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);text-align:left;font-weight:600;padding:10px 12px;
+    border-bottom:1px solid var(--rule-hard);white-space:nowrap;background:var(--sunk);}
+  td{padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  th.r,td.r{text-align:right;}
+  td.id{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);white-space:nowrap;
+    border-left:3px solid transparent;}
+  tr.own-R td.id{border-left-color:var(--indigo);}
+  tr.own-N td.id{border-left-color:var(--moss);}
+  tr.own-K td.id{border-left-color:var(--ochre);}
+  td.item{min-width:220px;}
+  td.item .nm{font-weight:560;}
+  td.item .mt{display:block;font-size:11.5px;color:var(--ink-3);}
+  td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .store-row td{background:var(--sunk);font-family:var(--mono);font-size:11px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:7px 12px;
+    border-bottom:1px solid var(--rule-hard);}
+  .store-row .rt{float:right;letter-spacing:0;text-transform:none;color:var(--ink-3);}
+  tfoot td{background:var(--sunk);font-family:var(--mono);font-weight:600;
+    border-top:2px solid var(--ink);font-variant-numeric:tabular-nums;}
+
+  .pill{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+    padding:1px 6px;border-radius:2px;border:1px solid currentColor;white-space:nowrap;}
+  .p-free{color:var(--moss);} .p-taxed{color:var(--seal);}
+  .p-paid{color:var(--moss);background:var(--moss-soft);}
+
+  .cards{display:grid;gap:12px;grid-template-columns:1fr;}
+  @media(min-width:620px){.cards{grid-template-columns:1fr 1fr;}}
+  .card{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:15px 16px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;gap:7px;}
+  .card h3{font-size:14px;font-weight:640;display:flex;align-items:center;gap:8px;
+    flex-wrap:wrap;}
+  .card p{margin:0;font-size:13px;color:var(--ink-2);}
+  .card .k{font-family:var(--mono);color:var(--ink);font-variant-numeric:tabular-nums;}
+  ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:6px;
+    font-size:13px;color:var(--ink-2);}
+  li::marker{color:var(--ink-3);}
+  .done{color:var(--moss);font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+    font-weight:600;}
+
+  /* day 2 slot */
+  .slot{border:1px dashed var(--rule-hard);border-radius:3px;background:transparent;
+    padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+  .slot h3{font-size:14px;font-weight:640;color:var(--ink-2);}
+  .slot p{margin:0;font-size:13px;color:var(--ink-3);max-width:62ch;}
+  .slot .need{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .slot .need span{font-family:var(--mono);font-size:11px;color:var(--ink-3);
+    border:1px solid var(--rule);border-radius:2px;padding:2px 7px;background:var(--surface);}
+
+  footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--ink-3);font-size:12px;}
+  a{color:var(--seal);}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <h1>Japan Sourcing Trip — Day 1</h1>
+      <div class="sub">Akihabara, Tokyo · Monday 27 July 2026 · 15 lines across 6 transactions</div>
+    </div>
+    <div class="badges">
+      <span class="badge">FX ¥1 = ₱0.38</span>
+      <span class="badge">Hand-carry</span>
+      <span class="badge">Overhead unallocated</span>
+      <span class="badge">Per-unit = ex-OH</span>
+    </div>
+  </header>
+
+  <div class="status">
+    <div class="eyebrow">✓ Day 1 books closed — nothing payable</div>
+    <div class="amt"><s>¥93,637</s> &nbsp;→&nbsp; ¥0</div>
+    <p><strong>Russel → Nico settled in full.</strong> The three SNKRDUNK slabs Nico fronted
+      (D1-08 Luffy Elbaf, D1-09 Eevee Promo, D1-10 Squirtle SVG) are paid off. Kenshin settled
+      28 July. Every line on Day 1 now sits with its owner, paid.</p>
+    <div class="alt">Settled on the tax-free net, not the ¥103,000 sticker — ¥9,363 (₱3,558) not overpaid.</div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="lab">Gross deployed</div>
+      <div class="big">₱681,722</div>
+      <div class="note">¥1,793,836 across all three buyers</div>
+    </div>
+    <div class="tile">
+      <div class="lab">Russel's book</div>
+      <div class="big">₱89,470</div>
+      <div class="note">9 lines · 13.1% of the day · fully paid</div>
+    </div>
+    <div class="tile">
+      <div class="lab">Tax-free reclaimed</div>
+      <div class="big">¥175,544</div>
+      <div class="note">₱66,707 · 9.09% on two transactions</div>
+    </div>
+  </div>
+
+  <section class="split">
+    <h2>Capital by owner</h2>
+    <div class="bar" role="img" aria-label="Kenshin 72 percent, Nico 15 percent, Russel 13 percent">
+      <span class="seg-k" style="width:72.0%">72%</span>
+      <span class="seg-n" style="width:14.9%">15%</span>
+      <span class="seg-r" style="width:13.1%">13%</span>
+    </div>
+    <div class="legend">
+      <div class="leg"><i class="dot" style="background:var(--ochre)"></i>
+        <div><span class="who">Kenshin</span><span class="st">2 slabs · settled with Nico</span></div>
+        <span class="v">₱490,545</span></div>
+      <div class="leg"><i class="dot" style="background:var(--moss)"></i>
+        <div><span class="who">Nico</span><span class="st">4 slabs · own money · reimbursed</span></div>
+        <span class="v">₱101,707</span></div>
+      <div class="leg"><i class="dot" style="background:var(--indigo)"></i>
+        <div><span class="who">Russel</span><span class="st">9 lines · nothing payable</span></div>
+        <span class="v">₱89,470</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ledger — Day 1</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Line</th><th>Item</th><th>Owner</th><th>Payer</th>
+            <th class="r">Sticker ¥</th><th class="r">Paid ¥</th><th class="r">₱</th><th>Tax</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="store-row"><td colspan="8">SNKRDUNK Toreca Akihabara · 19:31
+            <span class="rt">paid by Nico · ¥434,546 card + ¥1,200,000 cash</span></td></tr>
+          <tr class="own-K"><td class="id">D1-06</td>
+            <td class="item"><span class="nm">1st Anniversary Nami</span><span class="mt">One Piece · PSA 10</span></td>
+            <td>Kenshin</td><td>Nico</td>
+            <td class="n r">950,000</td><td class="n r">863,636</td><td class="n r">328,181.68</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-K"><td class="id">D1-11</td>
+            <td class="item"><span class="nm">Top 8 Zoro</span><span class="mt">One Piece · PSA 10</span></td>
+            <td>Kenshin</td><td>Nico</td>
+            <td class="n r">470,000</td><td class="n r">427,273</td><td class="n r">162,363.74</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-N"><td class="id">D1-12</td>
+            <td class="item"><span class="nm">Primal Kyogre</span><span class="mt">Bandit Ring 1st Ed · PSA 10</span></td>
+            <td>Nico</td><td>Nico</td>
+            <td class="n r">185,000</td><td class="n r">168,182</td><td class="n r">63,909.16</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-N"><td class="id">D1-07</td>
+            <td class="item"><span class="nm">Luffy College Basket</span><span class="mt">One Piece · PSA 10</span></td>
+            <td>Nico</td><td>Nico</td>
+            <td class="n r">90,000</td><td class="n r">81,818</td><td class="n r">31,090.84</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D1-08</td>
+            <td class="item"><span class="nm">Luffy Elbaf</span><span class="mt">One Piece Day promo · PSA 10</span></td>
+            <td>Russel</td><td>Nico <span class="pill p-paid">repaid</span></td>
+            <td class="n r">55,000</td><td class="n r">50,000</td><td class="n r">19,000.00</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D1-10</td>
+            <td class="item"><span class="nm">Squirtle SVG #52</span><span class="mt">Pokémon · PSA 10</span></td>
+            <td>Russel</td><td>Nico <span class="pill p-paid">repaid</span></td>
+            <td class="n r">28,000</td><td class="n r">25,455</td><td class="n r">9,672.90</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D1-09</td>
+            <td class="item"><span class="nm">Eevee Promo</span><span class="mt">Prismatic Evolutions ETB · PSA 10</span></td>
+            <td>Russel</td><td>Nico <span class="pill p-paid">repaid</span></td>
+            <td class="n r">20,000</td><td class="n r">18,182</td><td class="n r">6,909.16</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+
+          <tr class="store-row"><td colspan="8">Card Collect
+            <span class="rt">paid by Russel · cash</span></td></tr>
+          <tr class="own-R"><td class="id">D1-13</td>
+            <td class="item"><span class="nm">Charizard — PCG 25th Anniversary #001</span><span class="mt">2021 JP · PSA 10 GEM MT</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">133,000</td><td class="n r">120,910</td><td class="n r">45,945.80</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+
+          <tr class="store-row"><td colspan="8">woorth Akihabara · 15:14
+            <span class="rt">3 lines · ¥17,440 · no tax-free on either buyer</span></td></tr>
+          <tr class="own-R"><td class="id">D1-01</td>
+            <td class="item"><span class="nm">Clefairy AR</span><span class="mt">M3 086/080 · PSA 10</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">8,980</td><td class="n r">8,980</td><td class="n r">3,412.40</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D1-02</td>
+            <td class="item"><span class="nm">Meowth — Pokémon Card e</span><span class="mt">e-Reader · 旧裏 · 統一 #006</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,980</td><td class="n r">1,980</td><td class="n r">752.40</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-N"><td class="id">D1-15</td>
+            <td class="item"><span class="nm">Audino AR</span><span class="mt">Pokémon · card unposted, booked @0.39</span></td>
+            <td>Nico</td><td>Nico</td>
+            <td class="n r">6,480</td><td class="n r">6,480</td><td class="n r">2,527.20</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+
+          <tr class="store-row"><td colspan="8">Every Toreca · 17:05
+            <span class="rt">paid by Russel · card</span></td></tr>
+          <tr class="own-R"><td class="id">D1-05</td>
+            <td class="item"><span class="nm">Oshawott AR</span><span class="mt">102/086 SV11W White Flare</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">5,980</td><td class="n r">5,980</td><td class="n r">2,272.40</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D1-04</td>
+            <td class="item"><span class="nm">Tepig AR</span><span class="mt">096/086 SV11W White Flare</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,480</td><td class="n r">2,480</td><td class="n r">942.40</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D1-03</td>
+            <td class="item"><span class="nm">Emolga AR</span><span class="mt">116/086 SV11B Black Bolt</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,480</td><td class="n r">1,480</td><td class="n r">562.40</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+
+          <tr class="store-row"><td colspan="8">MEETS
+            <span class="rt">paid by Nico · cash · no receipt</span></td></tr>
+          <tr class="own-N"><td class="id">D1-14</td>
+            <td class="item"><span class="nm">Maushold</span><span class="mt">Pokémon · PSA 10</span></td>
+            <td>Nico</td><td>Nico</td>
+            <td class="n r">11,000</td><td class="n r">11,000</td><td class="n r">4,180.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+        </tbody>
+
+        <tfoot>
+          <tr><td colspan="4">Day 1 total · 15 lines</td>
+            <td class="r">1,969,380</td><td class="r">1,793,836</td><td class="r">681,722.48</td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Settlement — SNKRDUNK bill ¥1,634,546</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Russel → Nico <span class="done">✓ SETTLED</span></h3>
+        <p class="k">¥93,637 &nbsp;·&nbsp; ₱35,582 @0.38</p>
+        <p>Paid in full — the full amount owed, in JPY cash, so no FX conversion and no exposure
+          to the unposted card rate. Verified two ways before paying (per-line ÷1.1 against
+          pro-rata of the bill); the methods agreed to ¥0.61.</p>
+      </div>
+      <div class="card">
+        <h3>Kenshin → Nico <span class="done">✓ SETTLED</span></h3>
+        <p class="k">¥1,290,909 &nbsp;·&nbsp; ₱490,545</p>
+        <p>Paid in full 28 July. Kenshin holds both slabs and exits the trip after Day 1 —
+          no further Kenshin lines expected.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Watch list</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Tax-free left on the table</h3>
+        <p class="k">¥3,489 &nbsp;·&nbsp; ₱1,326</p>
+        <p>Full consumption tax paid at three shops — <strong>woorth ¥1,585</strong> (hit twice,
+          by both buyers), MEETS ¥1,000, Every Toreca ¥904. Every basket cleared the ¥5,000 floor.
+          Ask <strong>免税できますか</strong> before the total is rung up; it cannot be added after the
+          receipt prints.</p>
+      </div>
+      <div class="card">
+        <h3>Still open</h3>
+        <ul>
+          <li>woorth took ¥17,440 across both buyers with zero tax-free — licensed or not?</li>
+          <li>D1-14 / D1-15 still have no receipt — Nico's money, Nico's cards</li>
+          <li>¥434,546 card leg unposted — ₱164,398.18 pending implies 0.37832</li>
+          <li>Trip overhead unallocated, so every per-unit figure is ex-OH</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Day 2</h2>
+    <div class="slot">
+      <h3>Awaiting entry — 28 July 2026</h3>
+      <p>Day 1 is closed and reconciled, so Day 2 opens with a zero balance between all three
+        buyers. Kenshin is out; expect Russel and Nico lines only.</p>
+      <div class="need">
+        <span>store + time</span>
+        <span>item + set</span>
+        <span>owner</span>
+        <span>payer</span>
+        <span>sticker ¥</span>
+        <span>免税 / 税込</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Working ledger only — Notion and Google Sheets remain the system of record.
+    Source: <span class="num">data/trips/japan-2026-07/</span> · FX ₱0.38/¥ per Russel, 28 July 2026.
+  </footer>
+
+</div>
