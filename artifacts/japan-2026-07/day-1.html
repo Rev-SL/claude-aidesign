@@ -143,6 +143,8 @@
   .p-free{color:var(--moss);} .p-taxed{color:var(--seal);}
   .p-paid{color:var(--moss);background:var(--moss-soft);}
   .p-biz{color:var(--indigo);} .p-pers{color:var(--ink-3);} .p-recv{color:var(--seal);}
+  .p-fx{color:var(--ochre);}
+  .store-row .rt .pill{text-transform:none;}
 
   tr.memo td{color:var(--ink-3);background:var(--sunk);}
   tr.memo td.item .nm{font-weight:500;}
@@ -181,7 +183,8 @@
       <div class="sub">Akihabara + Shinjuku · 27–28 July 2026 · 44 lines across 11 transactions</div>
     </div>
     <div class="badges">
-      <span class="badge">FX ¥1 = ₱0.38</span>
+      <span class="badge">FX ¥1 = ₱0.38 provisional</span>
+      <span class="badge">¥268,520 on card, unposted</span>
       <span class="badge">Hand-carry</span>
       <span class="badge">Expenses not capitalised</span>
       <span class="badge">Per-unit = ex-OH by decision</span>
@@ -240,6 +243,75 @@
     </div>
   </section>
 
+  <section class="stack">
+    <div class="daymark">
+      <span class="d">FX</span>
+      <h2>Card float — no peso rate yet</h2>
+      <span class="st" style="color:var(--ochre);font-weight:600">PROVISIONAL</span>
+    </div>
+
+    <div class="tiles">
+      <div class="tile" style="border-left:3px solid var(--ochre)">
+        <div class="lab">On card, unposted</div>
+        <div class="big">¥268,520</div>
+        <div class="note">27% of everything through Russel's hands · rate unknown</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Locked in cash</div>
+        <div class="big">¥706,507</div>
+        <div class="note">Yen already bought · these pesos are final</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Method unrecorded</div>
+        <div class="big">¥10,960</div>
+        <div class="note">woorth D1-01 + D1-02 · cash or card not noted</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Rate ₱/¥</th><th>Basis</th>
+            <th class="r">Card float in ₱</th><th class="r">vs booked</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="n">0.37500</td><td>Weak-peso case</td>
+            <td class="n r">100,695.00</td><td class="n r">−1,342.60</td></tr>
+          <tr><td class="n">0.37832</td><td>Implied by the pending SNKRDUNK posting</td>
+            <td class="n r">101,586.49</td><td class="n r">−451.11</td></tr>
+          <tr style="background:var(--sunk)"><td class="n"><strong>0.38000</strong></td>
+            <td><strong>Booked throughout this page</strong></td>
+            <td class="n r"><strong>102,037.60</strong></td><td class="n r">—</td></tr>
+          <tr><td class="n">0.38500</td><td>Strong-peso case</td>
+            <td class="n r">103,380.20</td><td class="n r">+1,342.60</td></tr>
+          <tr><td class="n">0.39000</td><td>Rate Nico's woorth line was booked at</td>
+            <td class="n r">104,722.80</td><td class="n r">+2,685.20</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>What actually moves</h3>
+        <p>Only the card lines are exposed — six transactions carrying <span class="k">¥268,520</span>,
+          tagged <span class="pill p-fx">rate pending</span> in the ledgers below. The cash legs
+          are settled: that yen was already bought, so no later posting can change them.</p>
+        <p>Across the full 0.375–0.390 band the card float swings about <span class="k">₱4,028</span>
+          — roughly <span class="k">1.1%</span> of Russel's trip cost. Real, but it will not
+          change a buy decision.</p>
+      </div>
+      <div class="card">
+        <h3>The one usable signal</h3>
+        <p>Day 1's SNKRDUNK card leg has <span class="k">₱164,398.18</span> pending against
+          <span class="k">¥434,546</span> — an implied <span class="k">0.37832</span>, about
+          0.4% under the 0.38 booked here. That is Nico's card, not Russel's, so it is an
+          indication rather than a guarantee.</p>
+        <p>Restate this page once the statements land. Until then treat every peso figure on a
+          card line as ±0.5%.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════════════ DAY 2 ═══════════════ -->
   <section class="stack">
     <div class="daymark">
@@ -287,7 +359,7 @@
             <td class="r">528,000</td><td class="r">480,000</td><td class="r">182,400.00</td><td></td></tr>
 
           <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:50 · receipt F4RX
-            <span class="rt">paid by Russel · Mastercard 4170 · ¥81,710</span></td></tr>
+            <span class="rt">paid by Russel · Mastercard 4170 · ¥81,710 <span class="pill p-fx">rate pending</span></span></td></tr>
           <tr class="own-R"><td class="id">D2-02</td>
             <td class="item"><span class="nm">Giratina VSTAR</span><span class="mt">ギラティナVSTAR · グレードA</span></td>
             <td>Russel</td><td>Russel</td>
@@ -347,7 +419,7 @@
             <td class="r">89,880</td><td class="r">81,710</td><td class="r">31,049.80</td><td></td></tr>
 
           <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:53 · receipt h0oF
-            <span class="rt">paid by Russel · JCB 1608 · ¥137,420</span></td></tr>
+            <span class="rt">paid by Russel · JCB 1608 · ¥137,420 <span class="pill p-fx">rate pending</span></span></td></tr>
           <tr class="own-R"><td class="id">D2-13</td>
             <td class="item"><span class="nm">Bulbasaur — AR spec</span><span class="mt">フシギダネ (AR仕様) · PSA 10 鑑定済</span></td>
             <td>Russel</td><td>Russel</td>
@@ -387,7 +459,7 @@
             <td class="r">151,160</td><td class="r">137,420</td><td class="r">52,219.60</td><td></td></tr>
 
           <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:57 · receipt Ju5e
-            <span class="rt">paid by Russel · JCB 1608 · ¥14,092</span></td></tr>
+            <span class="rt">paid by Russel · JCB 1608 · ¥14,092 <span class="pill p-fx">rate pending</span></span></td></tr>
           <tr class="own-R"><td class="id">D2-20</td>
             <td class="item"><span class="nm">MEGA Dream ex — high-class box</span><span class="mt">ハイクラスパック「MEGAドリームex」M2a · グレードS</span></td>
             <td>Russel</td><td>Russel</td>
@@ -395,7 +467,7 @@
             <td><span class="pill p-free">免税</span></td></tr>
 
           <tr class="store-row"><td colspan="8">トレカガレージ · 17:34
-            <span class="rt">paid by Russel · credit ¥13,930 · no tax-free</span></td></tr>
+            <span class="rt">paid by Russel · credit ¥13,930 · no tax-free <span class="pill p-fx">rate pending</span></span></td></tr>
           <tr class="own-R"><td class="id">D2-21</td>
             <td class="item"><span class="nm">Reshiram &amp; Zekrom GX</span><span class="mt">036/049 RR · ポケカ(EX) ドラゴン</span></td>
             <td>Russel</td><td>Russel</td>
@@ -613,7 +685,7 @@
 
         <tbody>
           <tr class="store-row"><td colspan="8">SNKRDUNK Toreca Akihabara · 19:31
-            <span class="rt">paid by Nico · ¥434,546 card + ¥1,200,000 cash</span></td></tr>
+            <span class="rt">paid by Nico · ¥434,546 card + ¥1,200,000 cash <span class="pill p-fx">rate pending</span></span></td></tr>
           <tr class="own-K"><td class="id">D1-06</td>
             <td class="item"><span class="nm">1st Anniversary Nami</span><span class="mt">One Piece · PSA 10</span></td>
             <td>Kenshin</td><td>Nico</td>
@@ -677,7 +749,7 @@
             <td><span class="pill p-taxed">税込</span></td></tr>
 
           <tr class="store-row"><td colspan="8">Every Toreca · 17:05
-            <span class="rt">paid by Russel · card</span></td></tr>
+            <span class="rt">paid by Russel · card <span class="pill p-fx">rate pending</span></span></td></tr>
           <tr class="own-R"><td class="id">D1-05</td>
             <td class="item"><span class="nm">Oshawott AR</span><span class="mt">102/086 SV11W White Flare</span></td>
             <td>Russel</td><td>Russel</td>
@@ -778,7 +850,8 @@
           <li>Day 1 expenses are a ¥20,000 estimate — ¥17,000 recalled, ¥3,000 unitemised, no receipts</li>
           <li>Momo dinner and both IC loads are unreceipted — ¥29,300 of expenses rests on recall</li>
           <li>D1-14 / D1-15 still have no receipt — Nico's money, Nico's cards</li>
-          <li>¥434,546 Day 1 card leg unposted — ₱164,398.18 pending implies 0.37832</li>
+          <li>No card has posted in pesos yet — ¥268,520 across 6 transactions still at a provisional 0.38</li>
+          <li>woorth D1-01 / D1-02 — ¥10,960 with the payment method never recorded; card or cash unknown</li>
         </ul>
       </div>
     </div>
@@ -789,6 +862,7 @@
     Tax-free lines are split per-line at ÷1.1; every transaction foots to its printed receipt
     total exactly, so no rounding correction was needed on either day.
     Expenses are recorded as business travel and never capitalised into inventory.
+    Every peso figure on a card line is provisional until the statements post.
     Source: <span class="num">data/trips/japan-2026-07/</span> · FX ₱0.38/¥ per Russel, 28 July 2026.
   </footer>
 
