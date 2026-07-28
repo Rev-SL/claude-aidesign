@@ -1,4 +1,4 @@
-<title>Japan Sourcing — Day 1 Costing</title>
+<title>Japan Sourcing — Trip Ledger (Day 1–2)</title>
 <style>
   :root{
     --paper:#ECEDEA; --surface:#FDFDFC; --sunk:#E3E5E1;
@@ -54,16 +54,14 @@
     border:1px solid var(--rule-hard);border-radius:2px;padding:3px 8px;color:var(--ink-2);
     background:var(--surface);}
 
-  /* status band — Day 1 books closed */
+  /* status band */
   .status{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--moss);
     border-radius:3px;padding:18px 20px;box-shadow:var(--shadow);
     display:flex;flex-direction:column;gap:9px;}
   .status .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--moss);font-weight:600;
-    display:flex;align-items:center;gap:7px;}
+    text-transform:uppercase;color:var(--moss);font-weight:600;}
   .status .amt{font-family:var(--mono);font-size:clamp(26px,7vw,36px);font-weight:600;
     letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums;}
-  .status .amt s{color:var(--ink-3);font-weight:500;text-decoration-thickness:1.5px;}
   .status p{margin:0;color:var(--ink-2);font-size:14px;max-width:62ch;}
   .status .alt{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);}
 
@@ -83,6 +81,17 @@
     border-bottom:1px solid var(--rule-hard);padding-bottom:7px;margin-bottom:14px;}
   section{display:block;}
 
+  /* day marker — the trip really is a sequence, so the day carries information */
+  .daymark{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:16px;}
+  .daymark .d{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-3);}
+  .daymark h2{font-size:19px;font-weight:660;letter-spacing:-.015em;border:none;
+    padding:0;margin:0;text-transform:none;font-family:var(--sans);color:var(--ink);}
+  .daymark .st{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.05em;}
+  .daymark .st.ok{color:var(--moss);font-weight:600;}
+  .stack{display:flex;flex-direction:column;gap:16px;}
+
   /* owner split */
   .split{display:flex;flex-direction:column;gap:12px;}
   .bar{display:flex;height:34px;border-radius:2px;overflow:hidden;border:1px solid var(--rule-hard);}
@@ -101,7 +110,7 @@
   /* ledger */
   .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface);
     box-shadow:var(--shadow);}
-  table{border-collapse:collapse;width:100%;min-width:660px;font-size:13.5px;}
+  table{border-collapse:collapse;width:100%;min-width:680px;font-size:13.5px;}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
     color:var(--ink-3);text-align:left;font-weight:600;padding:10px 12px;
     border-bottom:1px solid var(--rule-hard);white-space:nowrap;background:var(--sunk);}
@@ -113,7 +122,7 @@
   tr.own-R td.id{border-left-color:var(--indigo);}
   tr.own-N td.id{border-left-color:var(--moss);}
   tr.own-K td.id{border-left-color:var(--ochre);}
-  td.item{min-width:220px;}
+  td.item{min-width:230px;}
   td.item .nm{font-weight:560;}
   td.item .mt{display:block;font-size:11.5px;color:var(--ink-3);}
   td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
@@ -121,6 +130,8 @@
     letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:7px 12px;
     border-bottom:1px solid var(--rule-hard);}
   .store-row .rt{float:right;letter-spacing:0;text-transform:none;color:var(--ink-3);}
+  .sub-row td{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);
+    background:transparent;font-variant-numeric:tabular-nums;}
   tfoot td{background:var(--sunk);font-family:var(--mono);font-weight:600;
     border-top:2px solid var(--ink);font-variant-numeric:tabular-nums;}
 
@@ -133,8 +144,7 @@
   @media(min-width:620px){.cards{grid-template-columns:1fr 1fr;}}
   .card{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:15px 16px;
     box-shadow:var(--shadow);display:flex;flex-direction:column;gap:7px;}
-  .card h3{font-size:14px;font-weight:640;display:flex;align-items:center;gap:8px;
-    flex-wrap:wrap;}
+  .card h3{font-size:14px;font-weight:640;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .card p{margin:0;font-size:13px;color:var(--ink-2);}
   .card .k{font-family:var(--mono);color:var(--ink);font-variant-numeric:tabular-nums;}
   ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:6px;
@@ -143,7 +153,7 @@
   .done{color:var(--moss);font-family:var(--mono);font-size:11px;letter-spacing:.05em;
     font-weight:600;}
 
-  /* day 2 slot */
+  /* awaiting slot */
   .slot{border:1px dashed var(--rule-hard);border-radius:3px;background:transparent;
     padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
   .slot h3{font-size:14px;font-weight:640;color:var(--ink-2);}
@@ -160,66 +170,320 @@
 
   <header class="mast">
     <div>
-      <h1>Japan Sourcing Trip — Day 1</h1>
-      <div class="sub">Akihabara, Tokyo · Monday 27 July 2026 · 15 lines across 6 transactions</div>
+      <h1>Japan Sourcing Trip — Tokyo</h1>
+      <div class="sub">Akihabara + Shinjuku · 27–28 July 2026 · 44 lines across 11 transactions</div>
     </div>
     <div class="badges">
       <span class="badge">FX ¥1 = ₱0.38</span>
       <span class="badge">Hand-carry</span>
       <span class="badge">Overhead unallocated</span>
       <span class="badge">Per-unit = ex-OH</span>
+      <span class="badge">Day 2 expenses pending</span>
     </div>
   </header>
 
   <div class="status">
-    <div class="eyebrow">✓ Day 1 books closed — nothing payable</div>
-    <div class="amt"><s>¥93,637</s> &nbsp;→&nbsp; ¥0</div>
-    <p><strong>Russel → Nico settled in full.</strong> The three SNKRDUNK slabs Nico fronted
-      (D1-08 Luffy Elbaf, D1-09 Eevee Promo, D1-10 Squirtle SVG) are paid off. Kenshin settled
-      28 July. Every line on Day 1 now sits with its owner, paid.</p>
-    <div class="alt">Settled on the tax-free net, not the ¥103,000 sticker — ¥9,363 (₱3,558) not overpaid.</div>
+    <div class="eyebrow">✓ Both days reconciled — nothing payable between buyers</div>
+    <div class="amt">₱958,040 &nbsp;·&nbsp; ¥2,520,988</div>
+    <p><strong>Day 1 settled in full</strong> — Russel paid Nico the ¥93,637 he fronted, Kenshin
+      paid his ¥1,290,909 and exited. <strong>Day 2 is entirely Russel's book</strong>, ¥727,152
+      on his own cash and cards across five Shinjuku transactions. No cross-buyer balance
+      remains on the trip.</p>
+    <div class="alt">¥246,857 (₱93,806) reclaimed through 免税 · ¥4,755 consumption tax paid unnecessarily.</div>
   </div>
 
   <div class="tiles">
     <div class="tile">
-      <div class="lab">Gross deployed</div>
-      <div class="big">₱681,722</div>
-      <div class="note">¥1,793,836 across all three buyers</div>
+      <div class="lab">Trip deployed</div>
+      <div class="big">₱958,040</div>
+      <div class="note">¥2,520,988 · 44 lines · 3 buyers</div>
     </div>
     <div class="tile">
       <div class="lab">Russel's book</div>
-      <div class="big">₱89,470</div>
-      <div class="note">9 lines · 13.1% of the day · fully paid</div>
+      <div class="big">₱365,788</div>
+      <div class="note">38 lines · 38.2% of the trip · all paid</div>
     </div>
     <div class="tile">
       <div class="lab">Tax-free reclaimed</div>
-      <div class="big">¥175,544</div>
-      <div class="note">₱66,707 · 9.09% on two transactions</div>
+      <div class="big">¥246,857</div>
+      <div class="note">₱93,806 · 6 of 11 transactions</div>
     </div>
   </div>
 
   <section class="split">
-    <h2>Capital by owner</h2>
-    <div class="bar" role="img" aria-label="Kenshin 72 percent, Nico 15 percent, Russel 13 percent">
-      <span class="seg-k" style="width:72.0%">72%</span>
-      <span class="seg-n" style="width:14.9%">15%</span>
-      <span class="seg-r" style="width:13.1%">13%</span>
+    <h2>Capital by owner — trip to date</h2>
+    <div class="bar" role="img" aria-label="Kenshin 51 percent, Russel 38 percent, Nico 11 percent">
+      <span class="seg-k" style="width:51.2%">51%</span>
+      <span class="seg-r" style="width:38.2%">38%</span>
+      <span class="seg-n" style="width:10.6%">11%</span>
     </div>
     <div class="legend">
       <div class="leg"><i class="dot" style="background:var(--ochre)"></i>
-        <div><span class="who">Kenshin</span><span class="st">2 slabs · settled with Nico</span></div>
+        <div><span class="who">Kenshin</span><span class="st">2 slabs · Day 1 only · exited</span></div>
         <span class="v">₱490,545</span></div>
-      <div class="leg"><i class="dot" style="background:var(--moss)"></i>
-        <div><span class="who">Nico</span><span class="st">4 slabs · own money · reimbursed</span></div>
-        <span class="v">₱101,707</span></div>
       <div class="leg"><i class="dot" style="background:var(--indigo)"></i>
-        <div><span class="who">Russel</span><span class="st">9 lines · nothing payable</span></div>
-        <span class="v">₱89,470</span></div>
+        <div><span class="who">Russel</span><span class="st">38 lines · 9 on D1, 29 on D2</span></div>
+        <span class="v">₱365,788</span></div>
+      <div class="leg"><i class="dot" style="background:var(--moss)"></i>
+        <div><span class="who">Nico</span><span class="st">4 slabs · Day 1 only · reimbursed</span></div>
+        <span class="v">₱101,707</span></div>
     </div>
   </section>
 
-  <section>
-    <h2>Ledger — Day 1</h2>
+  <!-- ═══════════════ DAY 2 ═══════════════ -->
+  <section class="stack">
+    <div class="daymark">
+      <span class="d">Day 2</span>
+      <h2>Shinjuku · Tuesday 28 July</h2>
+      <span class="st ok">✓ ALL RUSSEL · SELF-FUNDED</span>
+    </div>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="lab">Day 2 deployed</div>
+        <div class="big">₱276,318</div>
+        <div class="note">¥727,152 · 29 lines · 30 items</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Biggest line</div>
+        <div class="big">₱182,400</div>
+        <div class="note">Pokémon Stamp Box · 66% of the day</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Day 2 tax-free</div>
+        <div class="big">¥71,313</div>
+        <div class="note">₱27,099 · 4 of 5 transactions</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Line</th><th>Item</th><th>Owner</th><th>Payer</th>
+            <th class="r">Sticker ¥</th><th class="r">Paid ¥</th><th class="r">₱</th><th>Tax</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:45 · receipt p6zK
+            <span class="rt">paid by Russel · cash ¥480,000 · change ¥0</span></td></tr>
+          <tr class="own-R"><td class="id">D2-01</td>
+            <td class="item"><span class="nm">Pokémon Stamp Box</span><span class="mt">ポケモン切手BOX · sealed</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">528,000</td><td class="n r">480,000</td><td class="n r">182,400.00</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="sub-row"><td colspan="4">免税 −¥47,995 · 手打ち割引 −¥5</td>
+            <td class="r">528,000</td><td class="r">480,000</td><td class="r">182,400.00</td><td></td></tr>
+
+          <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:50 · receipt F4RX
+            <span class="rt">paid by Russel · Mastercard 4170 · ¥81,710</span></td></tr>
+          <tr class="own-R"><td class="id">D2-02</td>
+            <td class="item"><span class="nm">Giratina VSTAR</span><span class="mt">ギラティナVSTAR · グレードA</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">26,800</td><td class="n r">24,364</td><td class="n r">9,258.32</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-03</td>
+            <td class="item"><span class="nm">Arceus VSTAR</span><span class="mt">アルセウスVSTAR · グレードA</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">15,800</td><td class="n r">14,364</td><td class="n r">5,458.32</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-04</td>
+            <td class="item"><span class="nm">Gengar LV.38</span><span class="mt">ゲンガー LV.38 · グレードB</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">11,800</td><td class="n r">10,727</td><td class="n r">4,076.26</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-05</td>
+            <td class="item"><span class="nm">Origin Palkia V (SA)</span><span class="mt">オリジンパルキアV(SA) · グレードA</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">9,800</td><td class="n r">8,909</td><td class="n r">3,385.42</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-06</td>
+            <td class="item"><span class="nm">Origin Palkia VSTAR</span><span class="mt">オリジンパルキアVSTAR · グレードA</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">9,800</td><td class="n r">8,909</td><td class="n r">3,385.42</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-07</td>
+            <td class="item"><span class="nm">Pikachu</span><span class="mt">ピカチュウ · グレードAM</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">4,280</td><td class="n r">3,891</td><td class="n r">1,478.58</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-08</td>
+            <td class="item"><span class="nm">Tyranitar ex δ Delta Species</span><span class="mt">バンギラスex δ-デルタ種 · グレードAM</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,980</td><td class="n r">2,709</td><td class="n r">1,029.42</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-09</td>
+            <td class="item"><span class="nm">Alakazam LV.X</span><span class="mt">フーディン LV.X · グレードB</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,880</td><td class="n r">2,618</td><td class="n r">994.84</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-10</td>
+            <td class="item"><span class="nm">Nidoking &amp; Nidoqueen δ</span><span class="mt">ニドキング&amp;ニドクイン δ-デルタ種 · グレードB</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,380</td><td class="n r">2,164</td><td class="n r">822.32</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-11</td>
+            <td class="item"><span class="nm">Single — manually rung</span><span class="mt">ポケカ_手打用シングル · item name not printed</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,180</td><td class="n r">1,982</td><td class="n r">753.16</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-12</td>
+            <td class="item"><span class="nm">Single — manually rung</span><span class="mt">ポケカ_手打用シングル · item name not printed</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,180</td><td class="n r">1,073</td><td class="n r">407.74</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="sub-row"><td colspan="4">11 lines · 免税 −¥8,170</td>
+            <td class="r">89,880</td><td class="r">81,710</td><td class="r">31,049.80</td><td></td></tr>
+
+          <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:53 · receipt h0oF
+            <span class="rt">paid by Russel · JCB 1608 · ¥137,420</span></td></tr>
+          <tr class="own-R"><td class="id">D2-13</td>
+            <td class="item"><span class="nm">Bulbasaur — AR spec</span><span class="mt">フシギダネ (AR仕様) · PSA 10 鑑定済</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">27,800</td><td class="n r">25,273</td><td class="n r">9,603.74</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-14</td>
+            <td class="item"><span class="nm">Black Bolt Deluxe — booster box</span><span class="mt">拡張パックデラックス「ブラックボルト」SV11B · グレードAM</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">28,000</td><td class="n r">25,455</td><td class="n r">9,672.90</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-15</td>
+            <td class="item"><span class="nm">White Flare Deluxe — booster box</span><span class="mt">拡張パックデラックス「ホワイトフレア」SV11W · グレードAM</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">25,700</td><td class="n r">23,364</td><td class="n r">8,878.32</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-16</td>
+            <td class="item"><span class="nm">White Flare — booster box</span><span class="mt">拡張パック「ホワイトフレア」SV11W · グレードAM</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">24,500</td><td class="n r">22,273</td><td class="n r">8,463.74</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-17</td>
+            <td class="item"><span class="nm">Regigigas</span><span class="mt">レジギガス · PSA 10 鑑定済</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">19,800</td><td class="n r">18,000</td><td class="n r">6,840.00</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-18</td>
+            <td class="item"><span class="nm">Oshawott</span><span class="mt">ミジュマル · PSA 10 鑑定済</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">14,800</td><td class="n r">13,455</td><td class="n r">5,112.90</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">D2-19</td>
+            <td class="item"><span class="nm">PSA 10 guaranteed — AR or above ×2</span><span class="mt">PSA10保証 AR以上 · ¥5,280 per item · 2 items</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">10,560</td><td class="n r">9,600</td><td class="n r">3,648.00</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="sub-row"><td colspan="4">7 lines · 8 items · 免税 −¥13,740</td>
+            <td class="r">151,160</td><td class="r">137,420</td><td class="r">52,219.60</td><td></td></tr>
+
+          <tr class="store-row"><td colspan="8">シンソク新宿店 · 18:57 · receipt Ju5e
+            <span class="rt">paid by Russel · JCB 1608 · ¥14,092</span></td></tr>
+          <tr class="own-R"><td class="id">D2-20</td>
+            <td class="item"><span class="nm">MEGA Dream ex — high-class box</span><span class="mt">ハイクラスパック「MEGAドリームex」M2a · グレードS</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">15,500</td><td class="n r">14,092</td><td class="n r">5,354.96</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+
+          <tr class="store-row"><td colspan="8">トレカガレージ · 17:34
+            <span class="rt">paid by Russel · credit ¥13,930 · no tax-free</span></td></tr>
+          <tr class="own-R"><td class="id">D2-21</td>
+            <td class="item"><span class="nm">Reshiram &amp; Zekrom GX</span><span class="mt">036/049 RR · ポケカ(EX) ドラゴン</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">4,000</td><td class="n r">4,000</td><td class="n r">1,520.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-22</td>
+            <td class="item"><span class="nm">Snorlax GX</span><span class="mt">カビゴンGX 001/SM-P · プロモ</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,100</td><td class="n r">2,100</td><td class="n r">798.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-23</td>
+            <td class="item"><span class="nm">Charizard CHR</span><span class="mt">リザードン 187/184 CHR · 炎</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">2,000</td><td class="n r">2,000</td><td class="n r">760.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-24</td>
+            <td class="item"><span class="nm">Manaphy AR</span><span class="mt">マナフィ 066/062 AR · 雷</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,750</td><td class="n r">1,750</td><td class="n r">665.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-25</td>
+            <td class="item"><span class="nm">Regigigas VSTAR SAR</span><span class="mt">レジギガスVSTAR 233/172 SAR</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,170</td><td class="n r">1,170</td><td class="n r">444.60</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-26</td>
+            <td class="item"><span class="nm">Lugia V</span><span class="mt">ルギアV 079/098 RR · copy 1 of 2</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,050</td><td class="n r">1,050</td><td class="n r">399.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-27</td>
+            <td class="item"><span class="nm">Lugia V</span><span class="mt">ルギアV 079/098 RR · copy 2 of 2</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">1,050</td><td class="n r">1,050</td><td class="n r">399.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-28</td>
+            <td class="item"><span class="nm">AR single — 117/106</span><span class="mt">receipt katakana unclear · name needs confirming</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">410</td><td class="n r">410</td><td class="n r">155.80</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">D2-29</td>
+            <td class="item"><span class="nm">Snorlax R</span><span class="mt">カビゴン 056/071 R</span></td>
+            <td>Russel</td><td>Russel</td>
+            <td class="n r">400</td><td class="n r">400</td><td class="n r">152.00</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="sub-row"><td colspan="4">9 lines · 税抜 ¥12,664 + 消費税 ¥1,266</td>
+            <td class="r">13,930</td><td class="r">13,930</td><td class="r">5,293.40</td><td></td></tr>
+        </tbody>
+
+        <tfoot>
+          <tr><td colspan="4">Day 2 total · 29 lines · 30 items</td>
+            <td class="r">798,470</td><td class="r">727,152</td><td class="r">276,317.76</td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="slot">
+      <h3>Day 2 expenses — awaiting entry</h3>
+      <p>Inventory only so far. Trip overhead is still unallocated across both days, so every
+        per-unit landed cost on this page is ex-OH. Send the expenses and I'll allocate them
+        pro-rata by line value and restate the per-unit figures.</p>
+      <div class="need">
+        <span>date</span>
+        <span>category</span>
+        <span>vendor</span>
+        <span>¥ amount</span>
+        <span>payer</span>
+        <span>allocate to D1 / D2 / both</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ DAY 1 ═══════════════ -->
+  <section class="stack">
+    <div class="daymark">
+      <span class="d">Day 1</span>
+      <h2>Akihabara · Monday 27 July</h2>
+      <span class="st ok">✓ CLOSED · ALL SETTLED</span>
+    </div>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="lab">Day 1 deployed</div>
+        <div class="big">₱681,722</div>
+        <div class="note">¥1,793,836 · 15 lines · 3 buyers</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Russel's share</div>
+        <div class="big">₱89,470</div>
+        <div class="note">9 lines · 13.1% of the day · fully paid</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Day 1 tax-free</div>
+        <div class="big">¥175,544</div>
+        <div class="note">₱66,707 · 2 of 6 transactions</div>
+      </div>
+    </div>
+
     <div class="scroll">
       <table>
         <thead>
@@ -330,20 +594,20 @@
   </section>
 
   <section>
-    <h2>Settlement — SNKRDUNK bill ¥1,634,546</h2>
+    <h2>Settlement — Day 1 SNKRDUNK bill ¥1,634,546</h2>
     <div class="cards">
       <div class="card">
         <h3>Russel → Nico <span class="done">✓ SETTLED</span></h3>
         <p class="k">¥93,637 &nbsp;·&nbsp; ₱35,582 @0.38</p>
-        <p>Paid in full — the full amount owed, in JPY cash, so no FX conversion and no exposure
-          to the unposted card rate. Verified two ways before paying (per-line ÷1.1 against
-          pro-rata of the bill); the methods agreed to ¥0.61.</p>
+        <p>Paid in full, in JPY cash, so no FX conversion and no exposure to the unposted card
+          rate. Verified two ways before paying (per-line ÷1.1 against pro-rata of the bill);
+          the methods agreed to ¥0.61.</p>
       </div>
       <div class="card">
         <h3>Kenshin → Nico <span class="done">✓ SETTLED</span></h3>
         <p class="k">¥1,290,909 &nbsp;·&nbsp; ₱490,545</p>
-        <p>Paid in full 28 July. Kenshin holds both slabs and exits the trip after Day 1 —
-          no further Kenshin lines expected.</p>
+        <p>Paid in full 28 July. Kenshin holds both slabs and exited the trip after Day 1 —
+          no Kenshin lines on Day 2, as expected.</p>
       </div>
     </div>
   </section>
@@ -353,43 +617,32 @@
     <div class="cards">
       <div class="card">
         <h3>Tax-free left on the table</h3>
-        <p class="k">¥3,489 &nbsp;·&nbsp; ₱1,326</p>
-        <p>Full consumption tax paid at three shops — <strong>woorth ¥1,585</strong> (hit twice,
-          by both buyers), MEETS ¥1,000, Every Toreca ¥904. Every basket cleared the ¥5,000 floor.
-          Ask <strong>免税できますか</strong> before the total is rung up; it cannot be added after the
-          receipt prints.</p>
+        <p class="k">¥4,755 &nbsp;·&nbsp; ₱1,807 &nbsp;·&nbsp; trip to date</p>
+        <p>Day 1 ¥3,489 — <strong>woorth ¥1,585</strong> (hit twice, by both buyers),
+          MEETS ¥1,000, Every Toreca ¥904. Day 2 ¥1,266 — <strong>トレカガレージ</strong>, the only
+          Day 2 shop that charged tax, with ¥12,664 pre-tax on one basket. Every basket cleared
+          the ¥5,000 floor. Ask <strong>免税できますか</strong> before the total is rung up; it cannot
+          be added after the receipt prints.</p>
       </div>
       <div class="card">
         <h3>Still open</h3>
         <ul>
-          <li>woorth took ¥17,440 across both buyers with zero tax-free — licensed or not?</li>
+          <li>D2-11 / D2-12 rang as 手打用シングル — ¥3,360 with no item name printed; identify before they hit inventory</li>
+          <li>D2-28 katakana unclear on the トレカガレージ receipt — confirm the ¥410 AR at 117/106</li>
+          <li>D2-19 is a ¥5,280-per-item PSA 10 guarantee ×2 — confirm what the two cards actually are</li>
+          <li>woorth took ¥17,440 across both buyers on Day 1 with zero tax-free — licensed or not?</li>
           <li>D1-14 / D1-15 still have no receipt — Nico's money, Nico's cards</li>
-          <li>¥434,546 card leg unposted — ₱164,398.18 pending implies 0.37832</li>
-          <li>Trip overhead unallocated, so every per-unit figure is ex-OH</li>
+          <li>¥434,546 Day 1 card leg unposted — ₱164,398.18 pending implies 0.37832</li>
+          <li>Trip overhead unallocated across both days, so every per-unit figure is ex-OH</li>
         </ul>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Day 2</h2>
-    <div class="slot">
-      <h3>Awaiting entry — 28 July 2026</h3>
-      <p>Day 1 is closed and reconciled, so Day 2 opens with a zero balance between all three
-        buyers. Kenshin is out; expect Russel and Nico lines only.</p>
-      <div class="need">
-        <span>store + time</span>
-        <span>item + set</span>
-        <span>owner</span>
-        <span>payer</span>
-        <span>sticker ¥</span>
-        <span>免税 / 税込</span>
       </div>
     </div>
   </section>
 
   <footer>
     Working ledger only — Notion and Google Sheets remain the system of record.
+    Tax-free lines are split per-line at ÷1.1; every transaction foots to its printed receipt
+    total exactly, so no rounding correction was needed on either day.
     Source: <span class="num">data/trips/japan-2026-07/</span> · FX ₱0.38/¥ per Russel, 28 July 2026.
   </footer>
 
