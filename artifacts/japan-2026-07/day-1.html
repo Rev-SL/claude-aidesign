@@ -139,6 +139,10 @@
     padding:1px 6px;border-radius:2px;border:1px solid currentColor;white-space:nowrap;}
   .p-free{color:var(--moss);} .p-taxed{color:var(--seal);}
   .p-paid{color:var(--moss);background:var(--moss-soft);}
+  .p-biz{color:var(--indigo);} .p-pers{color:var(--ink-3);} .p-recv{color:var(--seal);}
+
+  tr.memo td{color:var(--ink-3);background:var(--sunk);}
+  tr.memo td.item .nm{font-weight:500;}
 
   .cards{display:grid;gap:12px;grid-template-columns:1fr;}
   @media(min-width:620px){.cards{grid-template-columns:1fr 1fr;}}
@@ -176,9 +180,8 @@
     <div class="badges">
       <span class="badge">FX ¥1 = ₱0.38</span>
       <span class="badge">Hand-carry</span>
-      <span class="badge">Overhead unallocated</span>
-      <span class="badge">Per-unit = ex-OH</span>
-      <span class="badge">Day 2 expenses pending</span>
+      <span class="badge">Expenses not capitalised</span>
+      <span class="badge">Per-unit = ex-OH by decision</span>
     </div>
   </header>
 
@@ -187,9 +190,10 @@
     <div class="amt">₱958,040 &nbsp;·&nbsp; ¥2,520,988</div>
     <p><strong>Day 1 settled in full</strong> — Russel paid Nico the ¥93,637 he fronted, Kenshin
       paid his ¥1,290,909 and exited. <strong>Day 2 is entirely Russel's book</strong>, ¥727,152
-      on his own cash and cards across five Shinjuku transactions. No cross-buyer balance
-      remains on the trip.</p>
-    <div class="alt">¥246,857 (₱93,806) reclaimed through 免税 across the six licensed shops.</div>
+      on his own cash and cards across five Shinjuku transactions. Nothing is owed between the
+      three buyers; the only money still moving is <strong>¥1,809 VM owes Russel</strong> for a
+      pair of jeans.</p>
+    <div class="alt">¥246,857 (₱93,806) reclaimed through 免税 on inventory, ¥1,142 more on expenses.</div>
   </div>
 
   <div class="tiles">
@@ -442,18 +446,127 @@
       </table>
     </div>
 
-    <div class="slot">
-      <h3>Day 2 expenses — awaiting entry</h3>
-      <p>Inventory only so far. Trip overhead is still unallocated across both days, so every
-        per-unit landed cost on this page is ex-OH. Send the expenses and I'll allocate them
-        pro-rata by line value and restate the per-unit figures.</p>
-      <div class="need">
-        <span>date</span>
-        <span>category</span>
-        <span>vendor</span>
-        <span>¥ amount</span>
-        <span>payer</span>
-        <span>allocate to D1 / D2 / both</span>
+  </section>
+
+  <!-- ═══════════════ EXPENSES ═══════════════ -->
+  <section class="stack">
+    <div class="daymark">
+      <span class="d">Expenses</span>
+      <h2>Both days · Russel's spend</h2>
+      <span class="st ok">✓ NOT CAPITALISED</span>
+    </div>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="lab">Business travel</div>
+        <div class="big">₱11,005</div>
+        <div class="note">¥28,960 · meals ¥22,960 · transport ¥6,000</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Personal — outside the business</div>
+        <div class="big">₱3,655</div>
+        <div class="note">¥9,619 · apparel and eyewear</div>
+      </div>
+      <div class="tile">
+        <div class="lab">Owed to Russel</div>
+        <div class="big">₱687</div>
+        <div class="note">¥1,809 · VM's jeans · open</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Line</th><th>Item</th><th>Bucket</th><th>Payer</th>
+            <th class="r">Gross ¥</th><th class="r">Paid ¥</th><th class="r">₱</th><th>Tax</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="store-row"><td colspan="8">Day 2 · Tuesday 28 July
+            <span class="rt">4 receipts held</span></td></tr>
+          <tr class="own-R"><td class="id">E2-01</td>
+            <td class="item"><span class="nm">Kura Sushi — lunch for two</span><span class="mt">KURA 西新宿店 15:49 · 63 plates · cash ¥10,000, ¥40 change</span></td>
+            <td><span class="pill p-biz">meals</span></td><td>Russel</td>
+            <td class="n r">9,960</td><td class="n r">9,960</td><td class="n r">3,784.80</td>
+            <td><span class="pill p-taxed">税込</span></td></tr>
+          <tr class="own-R"><td class="id">E2-02</td>
+            <td class="item"><span class="nm">Sunglasses — "WON silver"</span><span class="mt">BLUE ELEPHANT 新宿店 16:36 · JCB 1608</span></td>
+            <td><span class="pill p-pers">personal</span></td><td>Russel</td>
+            <td class="n r">5,990</td><td class="n r">5,446</td><td class="n r">2,069.48</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">E2-03</td>
+            <td class="item"><span class="nm">GU — 4 garments + bag</span><span class="mt">GU 御成町店 14:27 · ¥1,290 ×2, ¥990 ×2, bag ¥30 · JCB</span></td>
+            <td><span class="pill p-pers">personal</span></td><td>Russel</td>
+            <td class="n r">4,590</td><td class="n r">4,173</td><td class="n r">1,585.74</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">E2-04</td>
+            <td class="item"><span class="nm">GU — jeans</span><span class="mt">same receipt · fronted for VM · JCB</span></td>
+            <td><span class="pill p-recv">receivable</span></td><td>Russel</td>
+            <td class="n r">1,990</td><td class="n r">1,809</td><td class="n r">687.42</td>
+            <td><span class="pill p-free">免税</span></td></tr>
+          <tr class="own-R"><td class="id">E2-05</td>
+            <td class="item"><span class="nm">IC card load</span><span class="mt">no receipt · Russel's recall</span></td>
+            <td><span class="pill p-biz">transport</span></td><td>Russel</td>
+            <td class="n r">2,000</td><td class="n r">2,000</td><td class="n r">760.00</td>
+            <td></td></tr>
+
+          <tr class="store-row"><td colspan="8">Day 1 · Monday 27 July
+            <span class="rt">no receipts · Russel's recall</span></td></tr>
+          <tr class="own-R"><td class="id">E1-01</td>
+            <td class="item"><span class="nm">Dinner</span><span class="mt">vendor not recorded</span></td>
+            <td><span class="pill p-biz">meals</span></td><td>Russel</td>
+            <td class="n r">10,000</td><td class="n r">10,000</td><td class="n r">3,800.00</td>
+            <td></td></tr>
+          <tr class="own-R"><td class="id">E1-02</td>
+            <td class="item"><span class="nm">IC card load</span><span class="mt">vendor not recorded</span></td>
+            <td><span class="pill p-biz">transport</span></td><td>Russel</td>
+            <td class="n r">4,000</td><td class="n r">4,000</td><td class="n r">1,520.00</td>
+            <td></td></tr>
+          <tr class="own-R"><td class="id">E1-03</td>
+            <td class="item"><span class="nm">Food</span><span class="mt">vendor not recorded</span></td>
+            <td><span class="pill p-biz">meals</span></td><td>Russel</td>
+            <td class="n r">3,000</td><td class="n r">3,000</td><td class="n r">1,140.00</td>
+            <td></td></tr>
+        </tbody>
+
+        <tfoot>
+          <tr><td colspan="4">Russel's spend · 8 lines</td>
+            <td class="r">37,530</td><td class="r">40,388</td><td class="r">15,347.44</td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <tbody>
+          <tr class="store-row"><td colspan="8">Memo — not Russel's cost</td></tr>
+          <tr class="memo own-N"><td class="id">E2-06</td>
+            <td class="item"><span class="nm">Coin locker — Shinjuku Underpass 1</span><span class="mt">LumineCreates 16:54 · door 5006 · Nico's IC card, ¥2,088 left after</span></td>
+            <td>Nico's cost</td><td>Nico</td>
+            <td class="n r">800</td><td class="n r">800</td><td class="n r">304.00</td>
+            <td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Why nothing lands in COGS</h3>
+        <p>Meals and transport are real costs of the trip but they are not a cost of the cards,
+          so capitalising them would inflate unit cost on inventory that gets priced against the
+          market. They sit as <strong>business travel</strong> instead. Every per-unit figure on
+          this page is ex-OH <em>by decision</em>, not because something is missing.</p>
+        <p class="k">₱11,005 business travel &nbsp;·&nbsp; 2.9% of Russel's ₱376,792 trip cost</p>
+      </div>
+      <div class="card">
+        <h3>Out of the business entirely</h3>
+        <p>The GU garments and the Blue Elephant shades are Russel's own money on Russel's own
+          things — recorded here so the trip's cash movements reconcile, then excluded from every
+          business figure above. The jeans are the exception: fronted for VM, so they are a
+          receivable, not a purchase.</p>
+        <p class="k">₱3,655 personal &nbsp;·&nbsp; ¥1,142 免税 reclaimed on non-inventory</p>
       </div>
     </div>
   </section>
@@ -594,14 +707,21 @@
   </section>
 
   <section>
-    <h2>Settlement — Day 1 SNKRDUNK bill ¥1,634,546</h2>
+    <h2>Settlement</h2>
     <div class="cards">
+      <div class="card" style="border-left:4px solid var(--seal)">
+        <h3>VM → Russel <span class="pill p-recv">open</span></h3>
+        <p class="k">¥1,809 &nbsp;·&nbsp; ₱687 @0.38</p>
+        <p>GU jeans, ¥1,990 on the sticker, fronted on Russel's JCB at 14:27 on Day 2. Billed
+          net of the 9.09% tax-free discount — the same basis Nico and Kenshin settled on, so
+          VM gets the benefit of the exemption rather than Russel pocketing it.</p>
+      </div>
       <div class="card">
         <h3>Russel → Nico <span class="done">✓ SETTLED</span></h3>
         <p class="k">¥93,637 &nbsp;·&nbsp; ₱35,582 @0.38</p>
-        <p>Paid in full, in JPY cash, so no FX conversion and no exposure to the unposted card
-          rate. Verified two ways before paying (per-line ÷1.1 against pro-rata of the bill);
-          the methods agreed to ¥0.61.</p>
+        <p>His share of the ¥1,634,546 SNKRDUNK bill on Day 1. Paid in full, in JPY cash, so no
+          FX conversion and no exposure to the unposted card rate. Verified two ways before
+          paying (per-line ÷1.1 against pro-rata of the bill); the methods agreed to ¥0.61.</p>
       </div>
       <div class="card">
         <h3>Kenshin → Nico <span class="done">✓ SETTLED</span></h3>
@@ -635,9 +755,10 @@
           <li>D2-11 / D2-12 rang as 手打用シングル — ¥3,360 with no item name printed; identify before they hit inventory</li>
           <li>D2-19 is a ¥5,280-per-item PSA 10 guarantee ×2 — confirm what the two cards actually are</li>
           <li>D2-28 katakana unclear on the トレカガレージ receipt — confirm the ¥410 AR at 117/106</li>
+          <li>VM owes ¥1,809 for the jeans — the only balance still open on the trip</li>
+          <li>All three Day 1 expenses are from recall with no receipt — ¥17,000 unverified</li>
           <li>D1-14 / D1-15 still have no receipt — Nico's money, Nico's cards</li>
           <li>¥434,546 Day 1 card leg unposted — ₱164,398.18 pending implies 0.37832</li>
-          <li>Trip overhead unallocated across both days, so every per-unit figure is ex-OH</li>
         </ul>
       </div>
     </div>
@@ -647,6 +768,7 @@
     Working ledger only — Notion and Google Sheets remain the system of record.
     Tax-free lines are split per-line at ÷1.1; every transaction foots to its printed receipt
     total exactly, so no rounding correction was needed on either day.
+    Expenses are recorded as business travel and never capitalised into inventory.
     Source: <span class="num">data/trips/japan-2026-07/</span> · FX ₱0.38/¥ per Russel, 28 July 2026.
   </footer>
 
