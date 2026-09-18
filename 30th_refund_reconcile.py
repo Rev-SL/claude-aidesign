@@ -19,6 +19,12 @@ WIN={'Binder':['Maribel Corpuz','Gabriel Galang'],
  'Poster':['Albie Peralta','Jared Chua','Michael Vivo','Joric Cabial','Mark Laurence Recio','Kim Saballegue','Hannah Mariano'],
  'ETB':['Renz Ryan Garcia','Derick Valdez','Rein Kevin Legarda','Albie Peralta','John David Laranang','Kris Becker','Francis Chen']}
 
+# Bulk wholesale orders carved out of the raffle and filled pro-rata at 1.16%
+# (confirmed by Russel 2026-09-18). name -> {product: allocated qty}
+BULK_ALLOC={'John Paulo Manuel':{'ETB':12},
+            'Anton Canoy':{'ETB':10},
+            'Vlade Mark Navarro':{'ETB':6}}
+
 def norm(s):
     s=unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode()
     return set(re.sub(r'[^a-z ]','',s.lower()).split())
@@ -42,7 +48,7 @@ for r in range(4,174):
         F=money(ws.cell(r,6).value),G=money(ws.cell(r,7).value),
         jacob=ws.cell(r,10).value,bank=ws.cell(r,11).value,acct=ws.cell(r,12).value,
         det=ws.cell(r,13).value,qr=ws.cell(r,14).value,done=ws.cell(r,15).value,
-        alloc={}))
+        alloc={},bulk=False))
 
 # allocate: winner -> the one order row containing that product
 unmatched=[]
@@ -54,6 +60,14 @@ for prod,names in WIN.items():
         if len(hit)==1: hit[0]['alloc'][prod]=hit[0]['alloc'].get(prod,0)+1
         else: unmatched.append((prod,w,[d['src'] for d in hit]))
 assert not unmatched, unmatched
+
+for wname,alloc in BULK_ALLOC.items():
+    wt=norm(wname)
+    hit=[d for d in recs if (wt<=norm(d['name']) or norm(d['name'])<=wt)
+         and all(k in d['items'] for k in alloc)]
+    assert len(hit)==1, (wname,[d['src'] for d in hit])
+    for k,v in alloc.items(): hit[0]['alloc'][k]=hit[0]['alloc'].get(k,0)+v
+    hit[0]['bulk']=True
 
 for d in recs:
     d['allocQty']=sum(d['alloc'].values())
@@ -126,19 +140,22 @@ s.auto_filter.ref=f'A4:U{row-1}'
 # ---- sheet 2: winners ----
 s2=out.create_sheet('Winners — Allocation')
 s2['A1']='Raffle Winners — Allocation Settlement'; s2['A1'].font=Font(size=14,bold=True,color=NAVY)
-H2=['Product Won','Winner','Order ID','SRP (₱)','Alloc Qty','Allocation Value',
+H2=['Product Won','Winner / Bulk Buyer','Order ID','SRP (₱)','Alloc Qty','Allocation Value',
     'Total 30% DP w/ SFee (whole order)','NET','Outcome','Status']
 for i,h in enumerate(H2,1):
     c=s2.cell(3,i,h); c.font=Font(bold=True,color='FFFFFF',size=10); c.fill=HDR
     c.alignment=Alignment(horizontal='center',wrap_text=True); c.border=BD
 s2.row_dimensions[3].height=32
 r2=4
-for prod in ['ETB','Binder','Ex Tin 5107','Sylveon Ex Box','Poster','Tech Sticker','2-Pack Blister','Knock Out']:
-    for w in WIN.get(prod,[]):
+ORDER=[('ETB',list(BULK_ALLOC.keys())+WIN['ETB'])]+[(p,WIN[p]) for p in
+   ['Binder','Ex Tin 5107','Sylveon Ex Box','Poster','Tech Sticker','2-Pack Blister','Knock Out']]
+for prod,names in ORDER:
+    for w in names:
         wt=norm(w)
         d=[x for x in recs if (wt<=norm(x['name']) or norm(x['name'])<=wt) and prod in x['items']][0]
         out_txt=('REFUND ₱%s'%format(d['refund'],',.2f')) if d['refund']>0 else ('COLLECT ₱%s'%format(d['due'],',.2f'))
         st='⚠ SFee not logged — provisional' if d['est'] else 'OK'
+        st=('BULK pro-rata 1.16% \u2014 '+st) if d['bulk'] else st
         for j,v in enumerate([prod,d['name'],d['oid'],SRP[prod],d['alloc'][prod],
                               SRP[prod]*d['alloc'][prod],d['paid'],d['net'],out_txt,st],1):
             c=s2.cell(r2,j,v); c.border=BD; c.font=Font(size=10)
@@ -169,8 +186,12 @@ for d in recs:
     if d['est']: ex('BLOCKER','SFee not logged (Total 30% DP w/ SFee blank)',d,
         'Provisional figure uses 30%% DP only (₱%s). Add shipping fee before payout.'%format(d['F'],',.2f'))
 for d in recs:
-    if (d['qty'] or 0)>=30: ex('VERIFY','Bulk / possible data-entry error',d,
-        'Qty %s, DP ₱%s. Confirm this is a real order.'%(int(d['qty']),format(d['F'],',.2f')))
+    if (d['qty'] or 0)>=30 and not d['bulk']: ex('VERIFY','Large order — raffle fill only',d,
+        'Qty %s, DP ₱%s. Received no pro-rata allocation; confirm none is owed.'%(int(d['qty']),format(d['F'],',.2f')))
+for d in recs:
+    if d['bulk']: ex('BLOCKER','Very large refund — verify funds before release',d,
+        'Pro-rata %s on %s ordered. Refund ₱%s. Confirm the ₱%s downpayment actually cleared and verify payee identity before releasing.'
+        %(', '.join(f'{k} x{v}' for k,v in d['alloc'].items()),int(d['qty']),format(d['refund'],',.2f'),format(d['F'],',.2f')))
 for d in recs:
     if d['G'] is not None and abs(d['G']-d['F'])<0.01: ex('VERIFY','SFee = ₱0',d,'Confirm free shipping / pickup.')
 for d in recs:
