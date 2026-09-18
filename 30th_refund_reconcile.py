@@ -19,11 +19,24 @@ WIN={'Binder':['Maribel Corpuz','Gabriel Galang'],
  'Poster':['Albie Peralta','Jared Chua','Michael Vivo','Joric Cabial','Mark Laurence Recio','Kim Saballegue','Hannah Mariano'],
  'ETB':['Renz Ryan Garcia','Derick Valdez','Rein Kevin Legarda','Albie Peralta','John David Laranang','Kris Becker','Francis Chen']}
 
-# Bulk wholesale orders carved out of the raffle and filled pro-rata at 1.16%
-# (confirmed by Russel 2026-09-18). name -> {product: allocated qty}
-BULK_ALLOC={'John Paulo Manuel':{'ETB':12},
-            'Anton Canoy':{'ETB':10},
-            'Vlade Mark Navarro':{'ETB':6}}
+# Solo (non-raffle) orders filled directly pro-rata at 1.16%, allocation = round(qty x 1.16%).
+# Reconciles to Russel's control table: ETB solo 29, 2-Pack Blister solo 1, total solo 30.
+SOLO_RATE=0.0116
+SOLO_ORDERS=[('John Paulo Manuel','ETB',1000),
+             ('Anton Canoy','ETB',850),
+             ('Vlade Mark Navarro','ETB',500),
+             ('Alexis Tiutan','ETB',80),
+             ('Gillian Mesoza','ETB',17),
+             ('Joric Cabial','ETB',17),
+             ('Lawrence (Anti-Hero)','2-Pack Blister',120)]
+SOLO_ALLOC={}
+for _n,_p,_q in SOLO_ORDERS:
+    _a=round(_q*SOLO_RATE)
+    if _a: SOLO_ALLOC.setdefault(_n,{})[_p]=_a
+
+# Russel's control table (image, 2026-09-18): product -> (to_allocate, solo, raffle)
+CONTROL={'ETB':(36,29,7),'2-Pack Blister':(2,1,1),'Knock Out':(1,0,1),'Sylveon Ex Box':(4,0,4),
+         'Poster':(7,0,7),'Binder':(2,0,2),'Ex Tin 5107':(3,0,3),'Tech Sticker':(4,0,4),'Ex Tin 4107':(0,0,0)}
 
 def norm(s):
     s=unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode()
@@ -61,13 +74,15 @@ for prod,names in WIN.items():
         else: unmatched.append((prod,w,[d['src'] for d in hit]))
 assert not unmatched, unmatched
 
-for wname,alloc in BULK_ALLOC.items():
+for wname,alloc in SOLO_ALLOC.items():
     wt=norm(wname)
-    hit=[d for d in recs if (wt<=norm(d['name']) or norm(d['name'])<=wt)
-         and all(k in d['items'] for k in alloc)]
-    assert len(hit)==1, (wname,[d['src'] for d in hit])
-    for k,v in alloc.items(): hit[0]['alloc'][k]=hit[0]['alloc'].get(k,0)+v
-    hit[0]['bulk']=True
+    for prod,qn in alloc.items():
+        srcq=[q for n,p2,q in SOLO_ORDERS if n==wname and p2==prod][0]
+        hit=[d for d in recs if (wt<=norm(d['name']) or norm(d['name'])<=wt)
+             and d['items'].get(prod)==srcq]
+        assert len(hit)==1, (wname,prod,[d['src'] for d in hit])
+        hit[0]['alloc'][prod]=hit[0]['alloc'].get(prod,0)+qn
+        hit[0]['bulk']=True
 
 for d in recs:
     d['allocQty']=sum(d['alloc'].values())
@@ -147,15 +162,17 @@ for i,h in enumerate(H2,1):
     c.alignment=Alignment(horizontal='center',wrap_text=True); c.border=BD
 s2.row_dimensions[3].height=32
 r2=4
-ORDER=[('ETB',list(BULK_ALLOC.keys())+WIN['ETB'])]+[(p,WIN[p]) for p in
+ORDER=[('ETB',[n for n in SOLO_ALLOC if 'ETB' in SOLO_ALLOC[n]]+WIN['ETB'])]+[(p,WIN[p]) for p in
    ['Binder','Ex Tin 5107','Sylveon Ex Box','Poster','Tech Sticker','2-Pack Blister','Knock Out']]
+ORDER=[(p,([n for n in SOLO_ALLOC if p in SOLO_ALLOC[n]] if p=='2-Pack Blister' else [])+ns)
+       if p=='2-Pack Blister' else (p,ns) for p,ns in ORDER]
 for prod,names in ORDER:
     for w in names:
         wt=norm(w)
         d=[x for x in recs if (wt<=norm(x['name']) or norm(x['name'])<=wt) and prod in x['items']][0]
         out_txt=('REFUND ₱%s'%format(d['refund'],',.2f')) if d['refund']>0 else ('COLLECT ₱%s'%format(d['due'],',.2f'))
         st='⚠ SFee not logged — provisional' if d['est'] else 'OK'
-        st=('BULK pro-rata 1.16% \u2014 '+st) if d['bulk'] else st
+        st=('SOLO pro-rata 1.16% \u2014 '+st) if d['bulk'] else st
         for j,v in enumerate([prod,d['name'],d['oid'],SRP[prod],d['alloc'][prod],
                               SRP[prod]*d['alloc'][prod],d['paid'],d['net'],out_txt,st],1):
             c=s2.cell(r2,j,v); c.border=BD; c.font=Font(size=10)
@@ -202,6 +219,66 @@ for d in recs:
 for col,w in zip(range(1,7),[12,42,10,28,14,72]): s3.column_dimensions[get_column_letter(col)].width=w
 s3.auto_filter.ref=f'A3:F{r3-1}'
 
+# ---- sheet 4: control reconciliation ----
+s4=out.create_sheet('Control Check',0)
+s4['A1']='Reconciliation vs Russel\u2019s Allocation Control Table'
+s4['A1'].font=Font(size=14,bold=True,color=NAVY)
+s4['A2']='Every figure below is recomputed from the refund sheet and compared against the control table.'
+s4['A2'].font=Font(size=9,italic=True,color='808080')
+H4=['Product','To Allocate (ctrl)','Solo (ctrl)','Raffle (ctrl)','Solo (computed)',
+    'Raffle (computed)','Total (computed)','Match?','SRP (\u20b1)','Allocation Value (\u20b1)']
+for i,h in enumerate(H4,1):
+    c=s4.cell(4,i,h); c.font=Font(bold=True,color='FFFFFF',size=10); c.fill=HDR
+    c.alignment=Alignment(horizontal='center',wrap_text=True); c.border=BD
+s4.row_dimensions[4].height=34
+solo_c={}; raf_c={}
+for d in recs:
+    for k,v in d['alloc'].items():
+        (solo_c if d['bulk'] else raf_c).setdefault(k,0)
+        if d['bulk']: solo_c[k]=solo_c.get(k,0)+v
+        else: raf_c[k]=raf_c.get(k,0)+v
+r4=5; allok=True
+for prod,(ta,so,ra) in CONTROL.items():
+    sc=solo_c.get(prod,0); rc=raf_c.get(prod,0); tc=sc+rc
+    ok = (sc==so and rc==ra and tc==ta); allok = allok and ok
+    for j,v in enumerate([prod,ta,so,ra,sc,rc,tc,'\u2713 MATCH' if ok else '\u2717 DIFF',
+                          SRP[prod],SRP[prod]*tc],1):
+        c=s4.cell(r4,j,v); c.border=BD; c.font=Font(size=10)
+        if j in (2,3,4,5,6,7): c.alignment=Alignment(horizontal='center')
+        if j in (9,10): c.number_format=P
+    s4.cell(r4,8).fill=PatternFill('solid',fgColor='C6E0B4' if ok else 'FFC7CE')
+    s4.cell(r4,8).font=Font(size=10,bold=True)
+    r4+=1
+for j,v in enumerate(['TOTAL',sum(v[0] for v in CONTROL.values()),sum(v[1] for v in CONTROL.values()),
+                      sum(v[2] for v in CONTROL.values()),sum(solo_c.values()),sum(raf_c.values()),
+                      sum(solo_c.values())+sum(raf_c.values()),
+                      '\u2713 ALL MATCH' if allok else '\u2717 CHECK',
+                      None,sum(SRP[k]*v for k,v in solo_c.items())+sum(SRP[k]*v for k,v in raf_c.items())],1):
+    c=s4.cell(r4,j,v); c.border=BD; c.font=Font(size=11,bold=True)
+    c.fill=PatternFill('solid',fgColor='D9E2F3')
+    if j in (2,3,4,5,6,7,8): c.alignment=Alignment(horizontal='center')
+    if j==10: c.number_format=P
+
+s4.cell(r4+2,1,'Solo allocation rule: round(order qty \u00d7 1.16%). Reproduces both control totals (ETB solo 29, 2-Pack Blister solo 1) exactly.')
+s4.cell(r4+2,1).font=Font(size=10,bold=True)
+r5=r4+3
+s4.cell(r5,1,'Solo order'); s4.cell(r5,2,'Product'); s4.cell(r5,3,'Qty ordered')
+s4.cell(r5,4,'\u00d7 1.16%'); s4.cell(r5,5,'Allocated')
+for j in range(1,6):
+    c=s4.cell(r5,j); c.font=Font(bold=True,color='FFFFFF',size=10); c.fill=HDR; c.border=BD
+r5+=1
+for n,prod,q in SOLO_ORDERS:
+    for j,v in enumerate([n,prod,q,round(q*SOLO_RATE,3),round(q*SOLO_RATE)],1):
+        c=s4.cell(r5,j,v); c.border=BD; c.font=Font(size=10)
+        if j in (3,4,5): c.alignment=Alignment(horizontal='center')
+    if round(q*SOLO_RATE)==0: 
+        for j in range(1,6): s4.cell(r5,j).font=Font(size=10,color='808080')
+    r5+=1
+s4.cell(r5,1,'Alexis Tiutan\u2019s 1 ETB unit is DERIVED, not supplied \u2014 confirm against your Solo Orders tab.')
+s4.cell(r5,1).font=Font(size=10,italic=True,color='C00000')
+for col,w in zip(range(1,11),[24,17,12,13,15,17,17,14,13,20]):
+    s4.column_dimensions[get_column_letter(col)].width=w
+
 out.save(OUT)
 
 # ---------- console summary ----------
@@ -210,6 +287,7 @@ tot_ref=sum(d['refund'] for d in recs); tot_due=sum(d['due'] for d in recs)
 miss=[d for d in recs if d['est']]
 ref_known=sum(d['refund'] for d in recs if not d['est'])
 ref_prov=sum(d['refund'] for d in recs if d['est'])
+print('CONTROL TABLE CHECK:', 'ALL MATCH' if allok else 'MISMATCH')
 print(f'orders                : {len(recs)}')
 print(f'allocation units      : {sum(d["allocQty"] for d in recs)} across {len([d for d in recs if d["allocQty"]])} orders')
 print(f'allocation value (SRP): {tot_alloc:>14,.2f}')
