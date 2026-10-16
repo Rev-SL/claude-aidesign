@@ -1,216 +1,197 @@
 # Collector's Corner: Roadmap to ₱50,000 Daily Gross
 
-_Prepared 14 Oct 2026 (Asia/Manila). Based on the Notion orders database (630 rows, May–Sep 2026). Collector's Corner does not sell through Shopify. Sales come in through the website (stock at Pilar HQ), 3 mall glass cabinets, 3 consignment partners, FB/IG DMs, Lives, Shopee, meetups and card shows. Collector's Corner also sells consigned stock from Tokyo Mikin._
+_Updated 16 Oct 2026 (Asia/Manila). Built on the live tracker "Collector's Corner – Sales & Inventory Tracker" (Google Sheets, synced hourly from the Notion orders database by Apps Script) and the team's stock locations._
 
 ---
 
-## 1. Where you actually are (from your own data)
+## 1. The real numbers
 
-| Signal | What the data shows | What it means |
+The dashboard says **₱13.33M all-time revenue and ₱26,086 average order**. Both are inflated. 8 orders of ₱300K or more make up **₱6.8M, half the total**. Some are real (the ₱2.6M PSA 10 Nika Luffy pair, ₱480K PSA 10 Pikachu). Some are almost certainly typos:
+
+| Row | Logged | Why it's suspect |
 |---|---|---|
-| Order logging | Last Notion order was **24 Sep**. Nothing logged for the past 3 weeks. | Orders are being missed or logged late. |
-| Order status | **144 of 630 orders (23%) have no status.** | Nobody can tell what has shipped. |
-| "Total Paid" field | Free text. A ₱1,185 item is logged as **₱1,185,000**, and there's a ₱2,600,000 cash meetup row. | Revenue totals are unusable, so the true daily gross isn't known yet. |
-| Payment methods | 18 different options (GCash, Gotyme, BPI, BDO, Maya, Cash, CO Link, PayMongo…). | Money lands in too many places to check against orders. |
-| Sales pattern | Jul: 265 orders (185 preorders). Aug: 43. Sep: 103 (59 preorders). | Sales come from drops, not a steady daily flow. |
-| Preorders | **103 orders sit "on hold pre-orders"**. | That's a large CS and cash liability to track. |
+| John Paulo Manuel, 30th ETB preorder (28 Jul) | ₱1,185,000 | Price ₱1,185, so it's off by ×1,000 |
+| Vlade Mark Navarro, 30th ETB preorder (30 Jul) | ₱592,500 | Same ETB; 500 units is unlikely |
+| Nicole Syjuco, Ascended Heroes bundle (24 and 25 May) | ₱300,000 ×2 | Same item on consecutive days: possible duplicate |
+| Santos Manuel (14 Jun) | ₱903,350 | Multi-item total. Verify it isn't double-counted with item rows |
 
-**The diagnosis:** sales aren't the first problem. You can't count your sales, so you can't scale them. Getting to ₱50K a day needs one place every peso and every card goes through, and a steady daily selling rhythm in place of drop spikes.
+**Monthly gross, excluding the ₱300K+ rows:**
+
+| Month | Gross | Orders | Per day |
+|---|---|---|---|
+| May | ₱898,893 | 56 | ₱29K |
+| Jun | ₱2,257,786 | 133 | **₱75K** |
+| Jul | ₱2,384,815 | 228 | **₱77K** |
+| Aug | ₱586,430 | 40 | ₱19K |
+| Sep | ₱392,800 | 43 | ₱13K |
+| Oct (to 16th) | ₱0 logged | 0 | — |
+
+**What this means:**
+1. **You've already done ₱50K a day.** June and July ran at ₱75K+/day, carried by the 30th Anniversary hype and high-ticket slabs. The goal isn't to discover how to get there. It's to stop the drop-off that follows each hype cycle.
+2. **Sales fell 75–85% after July.** The steady daily engine isn't there yet, so revenue follows release hype.
+3. **Nothing has been logged since 24 Sep.** The Notion sync is set up, so the gap means sales stopped being entered, not that the sync broke. October is invisible.
+4. **The typical order is ₱5,140 (median), and the average is ~₱13,000 without the big outliers.** At those numbers, ₱50K/day is **4–10 orders a day**, not 20.
 
 ---
 
-## 2. The ₱50K/day math
+## 2. What's broken in the tracker today
 
-₱50,000/day = **₱1.5M/month**. At a ~₱2,500 average basket that's **about 20 orders a day**. (Confirm the real average basket once Phase 0 data is clean.)
-
-| Channel | Target / day | How |
+| Problem | Effect | Fix |
 |---|---|---|
-| FB Live / TikTok Live selling | ₱17,000 | 4 scheduled Lives a week, about ₱30K per Live |
-| FB page, groups and DMs (posted stock, price lists, preorders) | ₱8,000 | Daily "New in" posts, fast DM replies, preorder windows |
-| Website (ships from Pilar HQ) | ₱7,000 | Every Live and post links to the site; restock posts |
-| Shopee + TikTok Shop | ₱6,000 | Sealed products and low-ticket singles |
-| Glass cabinets: One Ayala, Festival Mall, Sven | ₱5,000 | About ₱1,700/day per cabinet, refilled weekly with fast movers |
-| Consignment partners: RGB Toyzone, Anti Hero, Metromart | ₱3,000 | Restock what sells, pull what doesn't after 30 days |
-| Oripa / Dibs packs | ₱2,000 | Weekly runs (use `oripa-planner` for odds and filler cost) |
-| Events and B2B | ₱2,000 | Card shows averaged across the month, plus Kura Cases cross-sell |
-| **Total** | **₱50,000** | |
+| **Inventory, Stock Log, Auto Log, Unmatched and Consignee Settlement tabs are empty** | Dashboard shows #REF! for inventory value and reorder alerts | Rebuild those tabs (layout in section 4) |
+| Notion "Total Paid" is a text field | Typos like ₱1,185,000 flow straight into revenue | Add a **number** field "Amount ₱" in Notion. Make it required in the template. |
+| No sanity check on amounts | Big typos look like big sales | Add a **"Check"** column in Orders that flags any amount over ₱100K, or over 20× the item price. Jacob clears the flags weekly. |
+| 144 orders with no status | Can't tell what's shipped or paid | Jacob fills them in. Make Status required in the Notion template. |
+| 155 orders with no delivery method | Can't track shipping cost or what's in transit | Make Delivery required |
+| Notion "Location of item" only has Pilar, Sven, Festival, Greenhills | Can't tell which location or partner sold the item | Update the options (section 3) |
+| Sales don't deduct stock | Inventory is never right | Phase 1: match product names to SKUs (the Auto Log and Unmatched tabs were set up for this) |
 
-No single channel has to carry it. The plan fails if you depend on one big drop a month.
+**Keep the Notion → Sheets setup.** The team already logs in Notion, and the sync works. Don't introduce a new form. Tighten the Notion template so bad data can't get in, and let the Sheet do the maths.
 
 ---
 
-## 3. The core fix: one front door for every sale (Google Sheets)
+## 3. Stock locations and consignment
 
-**Recommendation: every sale is logged once, the moment it's paid, through one Google Form that feeds one Google Sheet.** That covers DM, Live, Shopee, meetup, event and preorder sales.
+Update the Notion **"Location of item"** options and the Sheet's location list to these 8 places.
 
-- **Sale closed in a DM or Live** → CS opens the "Log a Sale" form on their phone and fills it in before replying "confirmed" to the buyer. It takes about 30 seconds.
-- **At events or walk-ins** → the same form, or an **AppSheet app** built on the same Sheet. It can scan barcodes on sealed products and PSA slabs with the phone camera. AppSheet is free to build, and Workspace plan pricing decides how many people can use it.
-- **Shopee / TikTok Shop** → export orders weekly and paste them into the ORDERS tab. Don't retype them.
-- **The form forces clean data:** amount is a number field, and status, payment account, channel and location are dropdowns. The ₱1,185,000 typo can't happen.
-- **Cut payment accounts to 3:** GCash, one bank (BDO or BPI), and cash. That way Jacob can check each day's inflows against the Sheet in 10 minutes. (High-value sales above ₱30K go to bank transfer or GCash, not PayPal.)
+| Location | Type | Owner of stock | Sale gets logged… |
+|---|---|---|---|
+| **Pilar Main HQ** (website stock) | Owned, main warehouse | CC | As it happens, in Notion |
+| **One Ayala glass cabinet** | Owned, cabinet | CC | From the weekly cabinet sales report |
+| **Festival Mall glass cabinet** | Owned, cabinet | CC | From the weekly cabinet sales report |
+| **Sven glass cabinet** | Owned, cabinet | CC | From the weekly cabinet sales report |
+| **RGB Toyzone** | Consigned out | CC | From the partner's sales report, with payment "Partner – pending" |
+| **Anti Hero** | Consigned out | CC | Same |
+| **Metromart** | Consigned out | CC | Same |
+| **Tokyo Mikin items** (held at HQ) | Consigned in | **Tokyo Mikin** | As it happens, with Owner = Tokyo Mikin |
 
-Then split the tools by job:
-
-| Tool | Job | Who updates it |
-|---|---|---|
-| **Google Sheets** ("CC Ops Ledger") | Source of truth: orders, inventory, expenses, purchases, preorders, dashboard | Fed by Google Forms or AppSheet. Nobody types directly into the tabs. |
-| **Notion** | Work: tasks, SOPs, content calendar, event calendar, trend board, customer wishlist | Everyone |
-
-The Notion orders database becomes **read-only history** once the Sheet takes over. Two places logging orders means neither one is right.
-
-### Google Sheets layout ("CC Ops Ledger")
-
-1. **DASHBOARD**: today's gross vs ₱50K, 7-day average, orders, average basket, open preorders, cash per account, unshipped orders.
-2. **ORDERS** (Form: "Log a Sale"): date and time, channel, customer, items, qty, amount, payment account, status, delivery method, tracking number, handler.
-3. **INVENTORY**: one row per SKU per location (the 8 locations in section 3b), with an **Owner** column (Collector's Corner or Tokyo Mikin). Stock in comes from PURCHASES, stock out comes from ORDERS, and moves between locations come from TRANSFERS. That gives live quantity on hand, cost basis, margin and **aging** (stock older than 60 days gets flagged).
-4. **PURCHASES** (Form): date, supplier, items, qty, USD/JPY cost, Vikings weight, **landed cost per unit** (auto-calculated).
-5. **EXPENSES** (Form): date, category (ads, shipping, supplies, salaries, rent, event fees), amount, paid via, receipt photo.
-6. **PREORDERS**: deposits collected vs supplier payments due vs ETA, per release.
-7. **TRANSFERS** (Form: "Move Stock"): date, item, qty, from location, to location, moved by. This is the only way stock changes location.
-8. **CONSIGNMENT**: one block per partner (see 3b): stock held, sales reported, money owed in either direction, last count date.
-
-**Rules that keep it clean:**
-- Each sale is logged once, through the form only.
-- Every dropdown is fixed.
-- An **"Unlogged" check** each night has Jacob compare that day's GCash/bank/cash totals against the ORDERS tab. Any gap gets fixed before bed. The target is 0.
-
----
-
-## 3b. Stock locations and consignment
-
-Your stock sits in **8 places across 3 different kinds of arrangement**. Each kind needs different tracking.
-
-| Location | Type | Who owns the stock | Who sells it | How a sale gets logged |
-|---|---|---|---|---|
-| **Pilar Main HQ** (website stock) | Owned, main warehouse | CC | CC (website, DMs, Lives, Shopee) | "Log a Sale" form as it happens |
-| **One Ayala glass cabinet** | Owned, cabinet | CC | Cabinet operator or CC staff | Cabinet sales report, logged weekly |
-| **Festival Mall glass cabinet** | Owned, cabinet | CC | Cabinet operator or CC staff | Cabinet sales report, logged weekly |
-| **Sven glass cabinet** | Owned, cabinet | CC | Cabinet operator or CC staff | Cabinet sales report, logged weekly |
-| **RGB Toyzone** | Consigned out | CC | RGB | Partner sales report → sale logged, remittance "pending" |
-| **Anti Hero** | Consigned out | CC | Anti Hero | Partner sales report → sale logged, remittance "pending" |
-| **Metromart** | Consigned out | CC | Metromart | Partner sales report → sale logged, remittance "pending" |
-| **Tokyo Mikin items** (held by CC) | Consigned in | **Tokyo Mikin** | CC | "Log a Sale" form, with Owner = Tokyo Mikin |
+Greenhills stays as an option if it's still used; otherwise retire it.
 
 ### Consigned out (RGB Toyzone, Anti Hero, Metromart)
-This is your stock in their stores. The risk is losing track of what's there and what you're owed.
-- **Before stock leaves HQ:** log a TRANSFERS entry and get a **signed or photographed delivery list** from the partner.
-- **Per partner, record:** commission or margin they keep, payout schedule, and who pays for loss or damage.
-- **Every 2 weeks:** get their sales report and log each sale with payment account "Partner – pending".
-- **Monthly settlement:** match the remittance to the pending sales, then mark them paid.
-- **Monthly count:** visit or video call and count. The difference between "sent minus sold" and "on shelf" is shrinkage, and goes on the partner scorecard.
-- **The 30-day rule:** anything unsold after 30 days gets pulled back to HQ or swapped for something that sells there.
+- **Every delivery:** a Stock Log row (OUT from HQ, IN to partner) plus a photographed, signed delivery list.
+- **Per partner, record:** commission they keep, payout schedule, who pays for loss or damage.
+- **Every 2 weeks:** get their sales report and log each sale in Notion.
+- **Monthly:** settle the remittance against "Partner – pending" sales and count what's on their shelf. Anything unsold after 30 days comes back or gets swapped.
 
 ### Glass cabinets (One Ayala, Festival Mall, Sven)
-These are your stock in your own display space.
-- **Refill weekly from HQ** using the Move Stock form. A cabinet should hold fast movers only. Slow stock goes back to HQ for Lives and the website.
-- **Photo of every cabinet at each visit**, uploaded with the count. It's cheap proof if something goes missing.
-- **Cabinet rent or fees** go in EXPENSES under "Cabinet – [name]", so each cabinet shows its own profit. A cabinet that doesn't cover its rent plus margin for 2 months in a row gets closed or moved.
+- Refill weekly from HQ with fast movers only, logged in Stock Log.
+- Photo of the cabinet at every visit.
+- Cabinet rent goes in expenses under the cabinet's name. A cabinet that doesn't cover rent plus margin for 2 months running gets closed or moved.
 
-### Consigned in (Tokyo Mikin): first time, so set it up properly
-**This isn't your inventory.** Tokyo Mikin's items must never show up in your stock value or your COGS. Only your commission is revenue.
+### Consigned in (Tokyo Mikin): first time, so put it in writing
+**Their stock isn't your inventory.** It must stay out of your inventory value and your cost of goods. Only your commission is CC revenue.
 
-**Get these in writing before selling a single piece** (a 1-page agreement is enough):
-1. **Item list:** item, condition, photos, and their **minimum price** for each.
-2. **Commission:** what CC keeps per sale. (Your default for individual consignors is 10%. For a store, decide whether 10% covers your CS, Live and shipping work.)
-3. **Who sets the final price,** and whether you can discount in Lives or bundle.
-4. **Payout schedule:** e.g. every 15th and month-end, by GCash or bank.
-5. **Loss, damage and returns:** who absorbs them, and when unsold items go back (e.g. after 60 days).
-6. **Fees:** who pays card or payment fees and shipping.
+Before selling a single piece, agree on 1 page:
+1. Item list with condition, photos and **minimum price** for each.
+2. **Commission** CC keeps. (Your default for individual consignors is 10%. Decide whether that covers Live, CS and shipping work for a store.)
+3. Who sets the final price, and whether you can discount in Lives or bundle.
+4. **Payout schedule** (e.g. 15th and month-end).
+5. Who absorbs loss or damage, and when unsold items go back (e.g. after 60 days).
+6. Who pays payment fees and shipping.
 
-**How it runs in the Sheet:**
-- Their items go into INVENTORY with **Owner = Tokyo Mikin** and **Location = Pilar HQ** (or wherever you put them).
-- A sale gets logged normally, and the Sheet splits it automatically into **Tokyo Mikin payout** and **CC commission**.
-- The CONSIGNMENT tab shows **"Owed to Tokyo Mikin"** as a running balance. Pay it on schedule and send them a statement. Paying on time makes this a repeatable supply channel with other stores.
+In the Sheet, the **Consignee Settlement** tab shows each Tokyo Mikin sale split into **their payout** and **CC commission**, with a running "Owed to Tokyo Mikin" balance. Paying on time is what makes other stores consign with you.
 
 ### What the ₱50K target counts
 The dashboard shows two numbers:
 - **Gross sales:** everything sold, including Tokyo Mikin items. This is the ₱50K target.
-- **CC revenue:** gross minus the consignor payouts. This is the number that pays the team.
-
-Consigned-out sales count on the day the partner **reports** them, not when the money arrives. The "Partner – pending" balance shows what's still uncollected.
+- **CC revenue:** gross minus consignor payouts.
 
 ---
 
-## 4. Your 8 "always urgent" items, each with an owner and a system
+## 4. Tracker tabs to rebuild
+
+| Tab | One row per… | Key columns |
+|---|---|---|
+| **Inventory** | Product × location | SKU, name, owner (CC / Tokyo Mikin), location, cost, price, opening qty, in, out, **on hand** (formula), value at cost (col J), reorder level, status "REORDER" (col L), days since last sale |
+| **Stock Log** | Movement | Date, SKU, location, type (IN / OUT / TRANSFER / ADJUST), qty, by whom, note |
+| **Auto Log** | Sale the script matched to a SKU | Notion ID, SKU, qty, location (stock-out written automatically) |
+| **Unmatched** | Sale the script couldn't match | Notion ID, item text. Jacob maps these weekly. |
+| **Consignee Settlement** | Consignor sale | Date, consignor, item, sale price, commission %, payout due, paid date |
+| **Expenses** (new) | Expense | Date, category, amount, paid via, location/cabinet, receipt link |
+| **Purchases** (new) | Buy | Date, supplier, items, qty, cost (USD/JPY), Vikings weight, landed cost per unit |
+
+The dashboard already expects inventory value in Inventory column J and "REORDER" flags in column L. The rebuilt tab keeps those positions, so the #REF! errors clear.
+
+---
+
+## 5. The ₱50K/day plan: steady sales between hype cycles
+
+At a ~₱13K average order, **₱50K/day ≈ 4 orders a day, or 120 a month**. June did 133 and July did 228. The target is to hold that through quiet months.
+
+| Channel | Target / day | How |
+|---|---|---|
+| FB Lives (4 a week) | ₱17,000 | Fixed schedule. Day Live 3 (16 Sep) sold 9 × 30th booster boxes at ₱12,500 in one session: repeat that format weekly. |
+| High-ticket slabs and sealed (meetup or bank transfer) | ₱10,000 | 1 high-value sale every 3–4 days. Post PSA 10s and cases weekly to the VIP buyer list. |
+| FB page and DMs, website (Pilar HQ) | ₱8,000 | Daily "New in" post; every post links to the website |
+| Glass cabinets: One Ayala, Festival Mall, Sven | ₱6,000 | ₱2K/day each; weekly refill with fast movers |
+| Consignment partners: RGB Toyzone, Anti Hero, Metromart | ₱3,000 | Restock what sells; 30-day pull rule |
+| Preorders (deposits for the next release) | ₱4,000 | Always one preorder window open. Only pay suppliers when deposits cover 50%+. |
+| Shopee, oripa, events | ₱2,000 | Fill-in channels |
+| **Total** | **₱50,000** | |
+
+**Repeat buyers are the lever.** Kerstie Dimple Barillo has 23 orders and ₱1M+ in spend. Build a **VIP list of the top 30 buyers** from the Orders tab. They get first access to slabs, sealed and preorders through a private group chat before anything goes public.
+
+---
+
+## 6. Roadmap
+
+### Phase 0: Clean data (now to 31 Oct)
+- Jacob logs every sale since 24 Sep in Notion, and fills the 144 blank statuses and 155 blank delivery methods.
+- Jacob verifies or fixes the 4 suspect rows in section 1.
+- Add "Amount ₱" (number, required) to the Notion template. Make Status and Delivery required. Update the Location options to the 8 locations.
+- Rebuild the Inventory, Stock Log and Consignee Settlement tabs. Count stock at all 8 locations and enter it as the opening qty.
+- Sign the Tokyo Mikin agreement. Confirm terms with RGB Toyzone, Anti Hero and Metromart.
+- **Exit check:** the dashboard shows real October numbers with no #REF! and no unverified ₱100K+ rows.
+
+### Phase 1: Daily engine (Nov to mid-Dec)
+**Goal: ₱30K/day average, with no month below ₱25K/day.**
+- Lives 4× a week. Melanie runs CS and logs in Notion during the Live. CJ clips highlights the next day.
+- VIP group chat launched with the top 30 buyers.
+- Sheila builds templates: "New in", price list, PSA slab feature, preorder card, Live schedule.
+- Facebook-only ads with Messenger as the destination, retargeting Live viewers. Run `ads-reviewer` weekly.
+- Auto stock-out: product-name → SKU matching in the Apps Script (Auto Log / Unmatched).
+- Christmas push: bundles, mystery boxes (₱999 / ₱1,999 / ₱4,999), an oripa run.
+
+### Phase 2: Scale (Jan to Apr 2027)
+**Goal: ₱50K/day held for 3 straight months.**
+- Eugene owns ads, content calendar and the Monday trend review. KPI: new buyers per week and ROAS.
+- Hire a packer/CS once orders hold above 6 a day for a month.
+- A monthly pack subscription for predictable base revenue.
+- Japan/Asia sourcing trips driven by the trend board and VIP requests. Run `sourcing-analyst`, then `grading-desk`, on big buys.
+
+---
+
+## 7. Your 8 "always urgent" items
 
 | Need | System | Owner | Standard |
 |---|---|---|---|
-| Always answer customers | Meta Business Suite inbox with saved replies, plus an auto-reply FAQ (prices, payment, shipping, preorder ETA) | Jacob (day), Melanie (evening and Lives) | First reply in **under 15 minutes** during 9AM–11PM |
-| Track orders | ORDERS tab, with a status dropdown and tracking number. A filtered "Unshipped" view on the dashboard. | Jacob | No order without a status after 24h |
-| Track expenses | Google Form → EXPENSES tab | Whoever spends | Logged the same day, with a receipt photo |
-| Track purchases | Google Form → PURCHASES tab (landed cost auto-calculated) | Russel | Logged before stock is listed |
-| Log all 3 | DASHBOARD pulls them together | Jacob reviews nightly | 0 unlogged inflows |
-| Seamless | One form per action, phone-friendly; no double entry into Notion | Russel sets up, Jacob runs it | Each sale typed once |
-| Update inventory | INVENTORY tab updates from sales, purchases and the Move Stock form, with an AppSheet barcode scan for sealed products and slabs | Jacob | HQ counted every Friday, cabinets at each weekly refill, consignment partners monthly; under 2% variance |
-| Check trends | Monday 30-minute Trend Review in Notion: JP release calendar, Card Ladder/PriceCharting movers, Shopee bestsellers, customer wishlist log | Russel + Eugene | Every buy decision ties to a trend note or deposits |
-
-**Preorder rule:** only commit supplier money when deposits cover at least 50% of the order. This keeps the 103 on-hold preorders from becoming a cash trap.
+| Always answer customers | Meta Business Suite saved replies + auto-reply FAQ | Jacob (day), Melanie (evening, Lives) | First reply under 15 min, 9AM–11PM |
+| Track orders | Notion status (required) → Orders tab | Jacob | No blank status after 24h |
+| Track expenses | Expenses tab | Whoever spends | Same day, with receipt |
+| Track purchases | Purchases tab with landed cost | Russel | Logged before stock is listed |
+| Log all 3 | Dashboard | Jacob, nightly | 0 sales missing vs GCash/bank inflows |
+| Seamless | Log once in Notion; the Sheet does the maths | Russel | No double entry |
+| Update inventory | Stock Log + auto stock-out | Jacob | HQ every Friday, cabinets weekly, partners monthly |
+| Check trends | Monday 30-min trend review in Notion | Russel + Eugene | Every buy ties to a trend note, VIP request or deposits |
 
 ---
 
-## 5. Roadmap
-
-### Phase 0: Foundation (Weeks 1–3, now to early Nov)
-**Goal: know the real daily gross.**
-- Build the CC Ops Ledger Sheet (8 tabs) and 4 Google Forms (Log a Sale, Move Stock, Purchase, Expense).
-- Move order history: export the Notion orders database to CSV, fix the Total Paid typos, and import it into ORDERS.
-- Back-log every order from 24 Sep to today. Fill the 144 blank statuses.
-- Do a full stock count at all 8 locations (HQ, 3 cabinets, 3 partners, plus the Tokyo Mikin items) and load it into INVENTORY.
-- Sign the Tokyo Mikin agreement. Confirm commission, payout and return terms with RGB Toyzone, Anti Hero and Metromart.
-- Cut payment accounts down to 3.
-- Write 3 SOPs in Notion: "How to log a sale", "How to ship", "How to answer DMs". (Use `sop-writer`.)
-- **Exit check:** 7 straight days with 0 unlogged sales, and a trustworthy daily gross number.
-
-### Phase 1: Daily selling engine (Weeks 4–8, Nov to mid-Dec)
-**Goal: ₱20–25K/day average, with no reliance on one big drop.**
-- **Lives:** fixed schedule, e.g. Tue/Thu/Sat/Sun 8PM. Melanie runs CS and logs Live sales on the form in real time. CJ clips highlights the next day.
-- **Daily FB posting:** a "New in" post every day and a weekly price list. Sheila builds reusable templates so posting takes minutes.
-- **Content:** CJ makes 1 short a day from Lives, pulls and unboxings.
-- **Ads:** Facebook placements only (avoid IG), with Messenger as the destination so ads land in the DM inbox. Retarget Live viewers and page engagers. Run `ads-reviewer` weekly.
-- **Marketplaces:** list sealed products on Shopee and TikTok Shop. Update stock from the INVENTORY tab twice a week.
-- **AppSheet:** add barcode scanning for stock in and out once the Sheet is stable.
-- **Christmas push:** gift bundles, starter decks, ₱999/₱1,999/₱4,999 mystery boxes and an oripa run.
-
-### Phase 2: Scale (Months 3–6, Jan to Apr 2027)
-**Goal: ₱35K/day by month 4, ₱50K/day by month 6.**
-- **Eugene starts:** owns ads, content calendar and the Monday trend review output. KPI: blended ROAS and new customers per week.
-- **Hire one packer/CS** when orders average 20 a day for 2 weeks, so Jacob moves from doing CS to managing it.
-- **Repeat buyers:** keep a customer list in the Sheet (built from ORDERS). Use it for a VIP tier (early preorder access, Live-only slots), plus a monthly pack subscription for predictable revenue.
-- **Sourcing:** Japan/Asia buying trips (Asia Tour) driven by the trend board, not gut feel. Run `sourcing-analyst`, then `grading-desk`, on big buys.
-- **Revisit a webstore only when** the Sheet runs clean and DM volume is more than CS can handle. A store is a channel, not the fix.
-
----
-
-## 6. Team: roles and the one number each person owns
-
-| Person | Role | Owns this number |
-|---|---|---|
-| **Russel** | Sourcing, trends, final decisions | Gross margin %, stock aging |
-| **Jacob** | Ops manager, CS lead, ledger hygiene | Unlogged sales = 0, ship within 48h |
-| **Melanie** | CS (evenings), Live co-host | First-reply time, Live sales |
-| **CJ** | Video: Live clips, shorts, unboxings | Posts per week, views |
-| **Sheila** | Graphics: templates, product images, ad creatives | Turnaround under 24h |
-| **Eugene** (incoming) | Marketing | ROAS, new customers per week |
-
----
-
-## 7. Weekly scorecard (Monday, 15 minutes)
+## 8. Weekly scorecard (Monday, 15 minutes)
 
 | Metric | Target |
 |---|---|
-| Daily gross (7-day average) | Month 1: ₱15K → Month 2: ₱25K → Month 4: ₱35K → Month 6: ₱50K |
-| Orders per day | Month 6: 20+ |
-| Unlogged sales | 0 |
+| Daily gross (7-day average) | Nov ₱30K → Jan ₱40K → Mar ₱50K |
+| Orders per day | 4+ |
+| Days with zero sales logged | 0 |
+| Rows flagged for checking | 0 at week end |
 | First-reply time | Under 15 minutes |
-| Orders shipped within 48h | 95%+ |
-| Inventory variance (Friday count) | Under 2% |
 | Stock older than 60 days | Under 15% of inventory value |
-| Preorder deposits vs supplier commitment | At least 50% |
+| Owed to Tokyo Mikin / partners, overdue | ₱0 |
 
 ---
 
 ## Next Actions
 
-1. **Russel:** sign a 1-page agreement with Tokyo Mikin before selling any of their items (item list with minimum prices, commission, payout dates, loss and returns). _(This week)_
-2. **Jacob:** count stock at all 8 locations, get the current sales reports from RGB Toyzone, Anti Hero and Metromart, and back-log all sales since 24 Sep. _(By 24 Oct)_
-3. **Russel:** build the CC Ops Ledger Sheet with the 4 forms (Log a Sale, Move Stock, Purchase, Expense), and cut payment accounts to GCash + one bank + cash. _(By 31 Oct)_
+1. **Jacob:** log all sales since 24 Sep in Notion, fill the blank statuses, and verify the 4 suspect rows. _(By 24 Oct)_
+2. **Russel:** sign the Tokyo Mikin agreement before selling any of their items. _(This week)_
+3. **Russel:** approve rebuilding the Inventory, Stock Log and Consignee Settlement tabs, then have Jacob count stock at all 8 locations. _(By 31 Oct)_
