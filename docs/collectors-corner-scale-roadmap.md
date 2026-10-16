@@ -98,7 +98,10 @@ The dashboard shows two numbers:
 
 ---
 
-## 4. Tracker tabs to rebuild
+## 4. Tracker tabs
+
+**Built 16 Oct 2026:** Inventory, Stock Log and Consignee Settlement are live with formulas, dropdowns and frozen headers. Location and partner lists, plus how-to notes, are in the Setup tab. Dashboard rows 11–14 now show inventory value, reorder count, money owed to consignors, and money partners owe CC. Auto Log and Unmatched are left for the Apps Script SKU matching. Expenses and Purchases are still to build.
+
 
 | Tab | One row per… | Key columns |
 |---|---|---|
